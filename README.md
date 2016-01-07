@@ -1,10 +1,14 @@
+	
+	# download closure library, closure compiler src, and compiler jar
+	
+	make deps
 
+# build and run locally
+	
+	grunt dist
+	make run
 
-	git clone https://github.com/google/closure-library app/closure-library
-	git clone https://github.com/google/closure-compiler.git app/closure-compiler
-	git clone https://github.com/google/closure-linter.git app/closure-linter
+# live server
 
-	wget http://dl.google.com/closure-compiler/compiler-latest.tar.gz \
-		-O compiler.tar.gz
-	tar xzf compiler.tar.gz -C ./
+	grunt server
 
