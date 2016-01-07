@@ -1,5 +1,6 @@
 	
-	# download closure library, closure compiler src, and compiler jar
+# download additional deps
+closure library, closure compiler src, and compiler jar
 	
 	make deps
 
