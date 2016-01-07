@@ -1,0 +1,23 @@
+{
+  "name": "closure-helpers",
+  "version": "0.0.3",
+  "main": [
+    "./lib/helpers.js",
+    "./lib/debug.js"
+  ],
+  "ignore": [
+    "test",
+    "build"
+  ],
+  "dependencies": {},
+  "homepage": "https://github.com/closureplease/closure-helpers",
+  "_release": "0.0.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.3",
+    "commit": "5840966fd4e2e043b8156b5f91cdb5f4b3e4f2cd"
+  },
+  "_source": "git://github.com/closureplease/closure-helpers.git",
+  "_target": "~0.0.2",
+  "_originalSource": "closure-helpers"
+}
