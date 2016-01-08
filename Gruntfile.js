@@ -21,7 +21,7 @@ module.exports = function (grunt) {
     // The folder that contains all the externs files.
     externs: [
 		'closure/closure-compiler/contrib/externs/angular-1.4.js',
-		'closure/closure-compiler/contrib/externs/angular-ui-router.js',
+		'closure/closure-compiler/contrib/externs/angular-ui-router.js'
 	],
 
     // define the main namespace of your app.
@@ -138,18 +138,23 @@ module.exports = function (grunt) {
         compile: true,
         compilerFile: CONF.closureCompiler,
         compilerOpts: {
-          //compilation_level: 'ADVANCED_OPTIMIZATIONS',
-          compilation_level: 'SIMPLE_OPTIMIZATIONS',
-          externs: CONF.externs,
+          compilation_level: 'ADVANCED_OPTIMIZATIONS',
+          //compilation_level: 'SIMPLE_OPTIMIZATIONS',
+          externs: [
+            'closure/closure-compiler/contrib/externs/angular-1.4*.js',
+            'closure/closure-compiler/contrib/externs/angular_ui_router.js'
+          ],
+          //externs: CONF.externs,
           define: [
             '\'goog.DEBUG=true\''
           ],
-          warning_level: 'verbose',
-          jscomp_off: ['checkTypes', 'fileoverviewTags'],
+          warning_level: 'VERBOSE',
+          jscomp_error: ['checkTypes', 'accessControls'],
+          //jscomp_warning: ['accessControls'],
+          jscomp_off: ['externsValidation'],
           summary_detail_level: 3,
           angular_pass: null,
           generate_exports: null,
-          //remove_unused_prototype_props_in_externs: false,
           export_local_property_definitions: null,
           only_closure_dependencies: null,
           closure_entry_point: CONF.entryPoint,

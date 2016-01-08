@@ -8,15 +8,21 @@ goog.provide('demo.app');
  * @type {angular.Module} 
  **/
 demo.app = angular.module('demo.app', [
-  'ngRoute',
-  'ui.router'
-]);
+    'ngRoute',
+    'ui.router'
+  ])
+  .config(demo.app.MainConfig)
+  .controller('demo.app.MainCtrl', demo.app.MainCtrl);
+
+
+
+
 
 
 /**
  * Main Config
- * @param  {!ui.router.$stateProvider} $stateProvider
- * @param  {!ui.router.$urlRouterProvider} $urlRouterProvider
+ * @param  {ui.router.$stateProvider=} $stateProvider
+ * @param  {ui.router.$urlRouterProvider=} $urlRouterProvider
  * @constructor
  * @export
  * @ngInject
@@ -38,14 +44,12 @@ demo.app.MainConfig = function ($stateProvider, $urlRouterProvider) {
     })
 };
 
-demo.app.config(demo.app.MainConfig);
 
 
 /**
  * Main controller
  * @param  {angular.Scope=} $scope
  * @constructor
- * @export
  * @ngInject
  */
 demo.app.MainCtrl = function($scope) {
@@ -57,4 +61,3 @@ demo.app.MainCtrl = function($scope) {
   $scope.message = 'Hello World';
 };
 
-demo.app.controller('demo.app.MainCtrl', demo.app.MainCtrl)
