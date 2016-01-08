@@ -1,6 +1,5 @@
 /*jshint camelcase:false */
-// Generated on 2016-01-06 using generator-closure 0.1.15
-//
+
 var mountFolder = function (connect, dir) {
   return connect.static(require('path').resolve(dir));
 };
@@ -8,45 +7,42 @@ var mountFolder = function (connect, dir) {
 module.exports = function (grunt) {
 
   //
-  //
-  // Config basic parameters
-  //
-  //
+  // Config
   //
   var CONF = {
-    // the base file of your project. The full path will result by concatenating
-    // appPath + bootstrapFile
+    // define the path to the app
+    appPath: 'app/js/',
+
+    buildPath: 'build',
+    tmpPath: 'tmp',
+
+    // Entry point file within `appPath`
     bootstrapFile: 'main.js',
 
-    // The folder that contains all the externs files.
-    externs: [
-		'closure/closure-compiler/contrib/externs/angular-1.4.js',
-		'closure/closure-compiler/contrib/externs/angular-ui-router.js'
-	],
-
-    // define the main namespace of your app.
+    // Entry point namespace
     entryPoint: 'demo.app',
-
-    // The path to the closure library
-    closureLibrary: process.env.CLOSURE_PATH || 'closure/closure-library',
-    closureCompiler: process.env.CLOSURE_COMPILER || 'closure/compiler.jar',
-    closureLinter: 'app/closure-linter/closure_linter',
 
     // The path to the installed bower components
     componentPath: 'bower_components',
 
+    // closure
+    closureCompiler: process.env.CLOSURE_COMPILER || 'closure/compiler.jar',
+    closureLibrary: process.env.CLOSURE_PATH || 'closure/closure-library',
+    closureLinter: 'closure/closure-linter/closure_linter',
+    externs: [
+      'closure/closure-compiler/contrib/externs/angular-1.4*.js',
+      'closure/closure-compiler/contrib/externs/angular_ui_router.js',
+      'closure/closure-compiler/contrib/externs/ui-bootstrap.js',
+    ],
+
+
+    // This sting will wrap your code marked as %output%
+    outputWrapper: '(function(){ %output% }).call(window)',
+
     // the compiled file
     destCompiled: 'dist/app.js',
 
-    // define the path to the app
-    appPath: 'app/js/',
 
-    // The location of the source map
-    sourceMap: 'build/sourcemap.js.map',
-
-    // This sting will wrap your code marked as %output%
-    // Take care to edit the sourcemap path
-    outputWrapper: '(function(){ %output% }).call(window)',
   };
 
   // the file globbing pattern for vendor file uglification.
@@ -54,6 +50,8 @@ module.exports = function (grunt) {
       CONF.componentPath + '/angular/angular.js',
       CONF.componentPath + '/angular-route/angular-route.js',
       CONF.componentPath + '/angular-ui-router/release/angular-ui-router.js',
+      CONF.componentPath + '/angular-bootstrap/ui-bootstrap.js',
+      CONF.componentPath + '/angular-bootstrap/ui-bootstrap-tpls.js',
 
       // and do not include jQuery, we'll use a CDN for it.
       '!' + CONF.appPath + '/vendor/jQuery*'
@@ -62,11 +60,8 @@ module.exports = function (grunt) {
 
 
   //
+  // Gruntconfig
   //
-  // Start Gruntconfig
-  //
-  //
-  // load all grunt tasks
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   grunt.initConfig({
@@ -93,6 +88,7 @@ module.exports = function (grunt) {
             'app',
             CONF.closureLibrary,
             CONF.componentPath,
+            CONF.tmpPath
           ],
         },
       }
@@ -109,13 +105,7 @@ module.exports = function (grunt) {
 
 
     //
-    //
-    //
-    // Closure Tools Tasks
-    //
-    // Dependency & Compiling
-    //
-    //
+    // Closure
     //
     closureDepsWriter: {
       options: {
@@ -125,10 +115,10 @@ module.exports = function (grunt) {
         options: {
           root_with_prefix: [
             '"' + CONF.appPath + ' ../../../js"',
-            '"' + CONF.componentPath + ' ../../../components"'
+            //'"' + CONF.componentPath + ' ../../../components"'
           ]
         },
-        dest: '' + CONF.appPath + '/deps.js'
+        dest: '' + CONF.tmpPath + '/deps.js'
       },
     },
     closureBuilder: {
@@ -140,11 +130,7 @@ module.exports = function (grunt) {
         compilerOpts: {
           compilation_level: 'ADVANCED_OPTIMIZATIONS',
           //compilation_level: 'SIMPLE_OPTIMIZATIONS',
-          externs: [
-            'closure/closure-compiler/contrib/externs/angular-1.4*.js',
-            'closure/closure-compiler/contrib/externs/angular_ui_router.js'
-          ],
-          //externs: CONF.externs,
+          externs: CONF.externs,
           define: [
             '\'goog.DEBUG=true\''
           ],
@@ -173,17 +159,6 @@ module.exports = function (grunt) {
           CONF.componentPath
         ],
         dest: 'build/compiled.js'
-      },
-      debug: {
-        options: {
-          compilerFile: CONF.closureCompiler
-        },
-        src: [
-          CONF.appPath,
-          CONF.closureLibrary,
-          CONF.componentPath
-        ],
-        dest: 'build/compiled.debug.js'
       }
     },
 
@@ -230,36 +205,40 @@ module.exports = function (grunt) {
       scripts: {
         src: ['build/vendor.js', 'build/compiled.js'],
         dest: 'build/app.js',
+
       },
       debug: {
-        src: [
-          CONF.componentPath + '/angular/angular.js',
-          CONF.componentPath + '/angular-route/angular-route.js',
-          CONF.componentPath + '/angular-ui-router/release/angular-ui-router.js',
-          'build/compiled.js',
-          'src-map-tail.js'
-        ],
-        dest: 'build/app.js',
+        src: 'build/app.js',
+        dest: 'build/app.debug.js',
+        options: {
+          footer: '//# sourceMappingURL=/source-map.js.map',
+        }
       }
     },
     copy: {
-      dist: {
+      html: {
         files: [{
-          src: 'build/app.js',
-          dest: 'dist/app.js',
-        },{
-          src: 'index.html',
+          src: 'app/index.dist.html',
           dest: 'dist/index.html',
         },{
           expand: true, cwd: 'app/', src: ['views/**'], dest: 'dist/'
         }]
       },
-      distdebug: {
+      js: {
+        files: [{
+          src: 'build/app.js',
+          dest: 'dist/app.js',
+        }]
+      },
+      jsdebug: {
         files: [{
           src: 'build/source-map.js.map',
-          dest: 'dist/source-map.js.map',
-        }],
-      },
+          dest: 'dist/source-map.js.map'
+        },{
+          src: 'build/app.debug.js',
+          dest: 'dist/app.js',
+        }]
+      }
     },
 
 
@@ -315,7 +294,6 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'connect:app',
-//      'open:server',
       'watch:livereload'
     ]);
   });
@@ -326,25 +304,28 @@ module.exports = function (grunt) {
     'mocha'
 */
   ]);
+
+  grunt.registerTask('build-debug', [
+    'clean:build',
+    'clean:dist',
+    'uglify:vendor',
+    'closureBuilder:app',
+    'concat:scripts',
+    'concat:debug',
+	'copy:html',
+	'copy:jsdebug',
+  ]);
+
   grunt.registerTask('build', [
     'clean:build',
     'clean:dist',
     'uglify:vendor',
     'closureBuilder:app',
     'concat:scripts',
+	'copy:html',
+	'copy:js',
   ]);
 
-  grunt.registerTask('dist-debug', [
-    'build',
-    'concat:debug',
-	'copy:dist',
-	'copy:distdebug',
-  ]);
-  grunt.registerTask('dist', [
-    'build',
-	'copy:dist',
-  ]);
-  
   grunt.registerTask('deps', [
     'closureDepsWriter:app',
   ]);

@@ -8,11 +8,10 @@ goog.provide('demo.app');
  * @type {angular.Module} 
  **/
 demo.app = angular.module('demo.app', [
-    'ngRoute',
-    'ui.router'
-  ])
-  .config(demo.app.MainConfig)
-  .controller('demo.app.MainCtrl', demo.app.MainCtrl);
+  'ngRoute',
+  'ui.router',
+  'ui.bootstrap'
+]);
 
 
 
@@ -31,17 +30,35 @@ demo.app.MainConfig = function ($stateProvider, $urlRouterProvider) {
   console.log('cfg');
 
   $urlRouterProvider.otherwise('/');
-
-  $stateProvider
-    .state('index', {
-      url: "/",
+  var root = {
+      url: "",
+      'abstract': true,
       views: {
         '': {
-          controller: 'demo.app.MainCtrl',
-          templateUrl: 'views/main.html'
+          templateUrl: 'views/root.html'
         }
       }
-    })
+  };
+  var home = {
+      url: "/",
+      'parent': root,
+      views: {
+
+        'main': {
+          controller: 'demo.app.MainCtrl',
+          templateUrl: 'views/home.html'
+        },
+        'header' : {
+          templateUrl: 'views/header.html'
+        },
+        'left' : {
+          templateUrl: 'views/left.html'
+        },
+      }
+  };
+  $stateProvider
+    .state('root', root)
+    .state('home', home);
 };
 
 
@@ -61,3 +78,6 @@ demo.app.MainCtrl = function($scope) {
   $scope.message = 'Hello World';
 };
 
+demo.app
+  .config(demo.app.MainConfig)
+  .controller('demo.app.MainCtrl', demo.app.MainCtrl);

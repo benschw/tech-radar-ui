@@ -1,7 +1,7 @@
 node_modules
 bower_components
 build
-app/js/deps.js
+tmp
 dist
 .sass-cache
 closure
