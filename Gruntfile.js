@@ -17,7 +17,7 @@ module.exports = function (grunt) {
     tmpPath: 'tmp',
 
     // Entry point file within `appPath`
-    bootstrapFile: 'main.js',
+    bootstrapFile: 'app.js',
 
     // Entry point namespace
     entryPoint: 'demo.app',
@@ -202,12 +202,12 @@ module.exports = function (grunt) {
       }
     },
     concat: {
-      scripts: {
+      js: {
         src: ['build/vendor.js', 'build/compiled.js'],
         dest: 'build/app.js',
 
       },
-      debug: {
+      jsdebug: {
         src: 'build/app.js',
         dest: 'build/app.debug.js',
         options: {
@@ -242,32 +242,6 @@ module.exports = function (grunt) {
     },
 
 
-    //
-    //
-    //
-    // Optional boilerplate tasks
-    //
-    //
-    imagemin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: 'app/images',
-          src: '{,*/}*.{png,jpg,jpeg}',
-          dest: 'app/images'
-        }]
-      }
-    },
-    cssmin: {
-      dist: {
-        files: {
-          'app/styles/main.css': [
-            'build/styles/{,*/}*.css',
-            'app/styles/{,*/}*.css'
-          ]
-        }
-      }
-    },
 
   }); // end grunt.initConfig();
 
@@ -310,8 +284,8 @@ module.exports = function (grunt) {
     'clean:dist',
     'uglify:vendor',
     'closureBuilder:app',
-    'concat:scripts',
-    'concat:debug',
+    'concat:js',
+    'concat:jsdebug',
 	'copy:html',
 	'copy:jsdebug',
   ]);
@@ -321,7 +295,7 @@ module.exports = function (grunt) {
     'clean:dist',
     'uglify:vendor',
     'closureBuilder:app',
-    'concat:scripts',
+    'concat:js',
 	'copy:html',
 	'copy:js',
   ]);
