@@ -1,9 +1,11 @@
+'use strict';
 /*jshint camelcase:false */
 
+/*
 var mountFolder = function (connect, dir) {
   return connect.static(require('path').resolve(dir));
 };
-
+*/
 module.exports = function (grunt) {
 
   //
@@ -128,6 +130,7 @@ module.exports = function (grunt) {
         compile: true,
         compilerFile: CONF.closureCompiler,
         compilerOpts: {
+          language_in: 'ECMASCRIPT5_STRICT',
           compilation_level: 'ADVANCED_OPTIMIZATIONS',
           //compilation_level: 'SIMPLE_OPTIMIZATIONS',
           externs: CONF.externs,
@@ -159,32 +162,6 @@ module.exports = function (grunt) {
           CONF.componentPath
         ],
         dest: 'build/compiled.js'
-      }
-    },
-
-    // Linting tasks.
-    closureLint: {
-      app:{
-        closureLinterPath : CONF.closureLinter,
-        src: [
-          'app/js/**'
-        ],
-        options: {
-          stdout: true,
-          strict: true
-        }
-      }
-    },
-    closureFixStyle: {
-      app:{
-        closureLinterPath : CONF.closureLinter,
-        src: [
-          'app/js/**'
-        ],
-        options: {
-          stdout: true,
-          strict: true
-        }
       }
     },
 
@@ -241,7 +218,18 @@ module.exports = function (grunt) {
       }
     },
 
-
+    jshint: {
+      options: {
+        jshintrc: '.jshintrc',
+        reporter: require('jshint-stylish')
+      },
+      all: {
+        src: [
+          'Gruntfile.js',
+          CONF.appPath
+        ]
+      },
+    },
 
   }); // end grunt.initConfig();
 
@@ -255,21 +243,22 @@ module.exports = function (grunt) {
   //
   //
   grunt.registerTask('server', function (target) {
-  /*
     if (target === 'test') {
-      return grunt.task.run([
+  /*
+      grunt.task.run([
         'clean:server',
         'connect:test',
         'open:test',
         'watch:test'
       ]);
-    }
 */
-    grunt.task.run([
-      'clean:server',
-      'connect:app',
-      'watch:livereload'
-    ]);
+    } else {
+      grunt.task.run([
+        'clean:server',
+        'connect:app',
+        'watch:livereload'
+      ]);
+    }
   });
   grunt.registerTask('test', [
 /*
@@ -278,25 +267,24 @@ module.exports = function (grunt) {
     'mocha'
 */
   ]);
-
-  grunt.registerTask('build-debug', [
+  grunt.registerTask('build-common', [
+    'jshint:all',
     'clean:build',
     'clean:dist',
     'uglify:vendor',
     'closureBuilder:app',
     'concat:js',
-    'concat:jsdebug',
 	'copy:html',
+  ]);
+
+  grunt.registerTask('build-debug', [
+    'build-common',
+    'concat:jsdebug',
 	'copy:jsdebug',
   ]);
 
   grunt.registerTask('build', [
-    'clean:build',
-    'clean:dist',
-    'uglify:vendor',
-    'closureBuilder:app',
-    'concat:js',
-	'copy:html',
+    'build-common',
 	'copy:js',
   ]);
 

@@ -1,4 +1,5 @@
-	
+POC fort closure and angularjs
+
 # download additional deps
 closure library, closure compiler src, and compiler jar
 	
