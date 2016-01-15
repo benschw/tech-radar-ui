@@ -4,6 +4,6 @@
  */
 goog.provide('demo');
 
-goog.require('demo.app');
+goog.require('demo.app.module');
 
 

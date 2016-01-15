@@ -2,12 +2,7 @@
 /**
  * @fileoverview Master bootstrap file.
  */
-goog.provide('demo.app');
-goog.provide('demo.app.MainConfig');
-
-goog.require('demo.app.HomeCtrl');
-goog.require('demo.app.MessagesCtrl');
-
+goog.provide('demo.app.Config');
 
 
 /**
@@ -18,7 +13,7 @@ goog.require('demo.app.MessagesCtrl');
  * @export
  * @ngInject
  */
-demo.app.MainConfig = function ($stateProvider, $urlRouterProvider) {
+demo.app.Config = function ($stateProvider, $urlRouterProvider) {
 
 	$urlRouterProvider.otherwise('/');
 	var root = {
@@ -67,21 +62,6 @@ demo.app.MainConfig = function ($stateProvider, $urlRouterProvider) {
 		.state('root.layout.messages', messages)
 		.state('root.layout.home', home);
 };
-
-
-
-
-/** 
- * @type {angular.Module} 
- **/
-demo.app = angular.module('demo.app', [
-		'ngRoute',
-		'ui.router',
-		'ui.bootstrap'
-	])
-	.config(demo.app.MainConfig)
-	.controller('demo.app.HomeCtrl', demo.app.HomeCtrl)
-	.controller('demo.app.MessagesCtrl', demo.app.MessagesCtrl);
 
 
 
