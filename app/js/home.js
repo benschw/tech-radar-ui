@@ -12,7 +12,6 @@ goog.provide('demo.app.HomeCtrl');
  * @ngInject
  */
 demo.app.HomeCtrl = function($scope) {
-	console.log('ctrl');
 	/**
 	 * @type {string}
 	 * @export

@@ -12,7 +12,6 @@ goog.provide('demo.app.MessagesCtrl');
  * @ngInject
  */
 demo.app.MessagesCtrl = function($scope) {
-	console.log('ctrl');
 	/**
 	 * @type {string}
 	 * @export

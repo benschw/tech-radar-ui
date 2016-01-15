@@ -19,10 +19,10 @@ module.exports = function (grunt) {
     tmpPath: 'tmp',
 
     // Entry point file within `appPath`
-    bootstrapFile: 'app.js',
+    bootstrapFile: 'main.js',
 
     // Entry point namespace
-    entryPoint: 'demo.app',
+    entryPoint: 'demo',
 
     // The path to the installed bower components
     componentPath: 'bower_components',

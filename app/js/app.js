@@ -19,7 +19,6 @@ goog.require('demo.app.MessagesCtrl');
  * @ngInject
  */
 demo.app.MainConfig = function ($stateProvider, $urlRouterProvider) {
-	console.log('cfg');
 
 	$urlRouterProvider.otherwise('/');
 	var root = {
@@ -83,5 +82,6 @@ demo.app = angular.module('demo.app', [
 	.config(demo.app.MainConfig)
 	.controller('demo.app.HomeCtrl', demo.app.HomeCtrl)
 	.controller('demo.app.MessagesCtrl', demo.app.MessagesCtrl);
+
 
 
