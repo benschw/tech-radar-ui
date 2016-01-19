@@ -4,7 +4,6 @@
  */
 goog.provide('demo.app.Config');
 
-
 /**
  * Main Config
  * @param  {ui.router.$stateProvider=} $stateProvider
@@ -20,7 +19,7 @@ demo.app.Config = function ($stateProvider, $urlRouterProvider) {
 		'abstract': true,
 		views: {
 			'': {
-				templateUrl: 'views/root.html'
+				templateUrl: 'app/tpl/root.html'
 			}
 		}
 	};
@@ -29,10 +28,10 @@ demo.app.Config = function ($stateProvider, $urlRouterProvider) {
 		'parent': root,
 		views: {
 			'header' : {
-				templateUrl: 'views/header.html'
+				templateUrl: 'app/tpl/header.html'
 			},
 			'left' : {
-				templateUrl: 'views/left.html'
+				templateUrl: 'app/tpl/left.html'
 			},
 		}
 	};
@@ -42,7 +41,7 @@ demo.app.Config = function ($stateProvider, $urlRouterProvider) {
 		views: {
 			'main@root': {
 				controller: 'demo.app.HomeCtrl',
-				templateUrl: 'views/home.html'
+				templateUrl: 'app/tpl/home.html'
 			}
 		}
 	};
@@ -52,7 +51,7 @@ demo.app.Config = function ($stateProvider, $urlRouterProvider) {
 		views: {
 			'main@root': {
 				controller: 'demo.app.MessagesCtrl',
-				templateUrl: 'views/messages.html'
+				templateUrl: 'app/tpl/messages.html'
 			}
 		}
 	};

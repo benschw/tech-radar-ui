@@ -13,6 +13,7 @@
   "globals": {
     "angular": false,
 	"goog": false,
-	"demo": false
+	"demo": false,
+	"cache": false
   }
 }

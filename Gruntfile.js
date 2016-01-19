@@ -90,7 +90,8 @@ module.exports = function (grunt) {
             'app',
             CONF.closureLibrary,
             CONF.componentPath,
-            CONF.tmpPath
+            CONF.tmpPath,
+            CONF.buildPath + '/tpl'
           ],
         },
       }
@@ -149,7 +150,7 @@ module.exports = function (grunt) {
           closure_entry_point: CONF.entryPoint,
           source_map_format: 'V3',
           create_source_map: 'build/source-map.js.map',
-          //formatting: 'PRETTY_PRINT',
+          formatting: 'PRETTY_PRINT',
           //debug: null,
           output_wrapper: CONF.outputWrapper
 
@@ -159,9 +160,34 @@ module.exports = function (grunt) {
         src: [
           CONF.appPath,
           CONF.closureLibrary,
-          CONF.componentPath
+          CONF.buildPath + "/tpl"
+
         ],
         dest: 'build/compiled.js'
+      }
+    },
+
+    // cache templates
+    ngtemplates:  {
+      app:        {
+        cwd:      'app/js',
+        src:      '**/**.html',
+        dest:     'build/tpl/app.templates.js',
+        options: {
+          module: 'cache.tpl',
+          bootstrap: function(module, script) {
+            return "goog.provide('"+module+"');\n" +
+                   "/**\n"+
+                   " * @param  {angular.$templateCache=} $templateCache\n"+
+                   " * @ngInject\n"+
+                   " */\n"+
+                   "var populateTpls = function($templateCache) {" + script+"};\n\n" +
+                   "/**\n"+
+                   " * @type {angular.Module}\n"+
+                   " */\n" +
+                   module+" = angular.module('"+module+"', []).run(populateTpls);\n\n";
+          }
+        }
       }
     },
 
@@ -197,8 +223,6 @@ module.exports = function (grunt) {
         files: [{
           src: 'app/index.dist.html',
           dest: 'dist/index.html',
-        },{
-          expand: true, cwd: 'app/', src: ['views/**'], dest: 'dist/'
         }]
       },
       js: {
@@ -271,10 +295,11 @@ module.exports = function (grunt) {
     'jshint:all',
     'clean:build',
     'clean:dist',
-    'uglify:vendor',
+    'ngtemplates',
     'closureBuilder:app',
+    'uglify:vendor',
     'concat:js',
-	'copy:html',
+    'copy:html',
   ]);
 
   grunt.registerTask('build-debug', [

@@ -19,6 +19,10 @@
         <script src="/angular-bootstrap/ui-bootstrap-tpls.js"></script>
         <script src="/closure/goog/base.js"></script>
         <script src="/deps.js"></script>
-        <script>goog.require('demo');</script>
+        <script>
+            goog.provide('cache.tpl');
+            goog.require('demo');
+            cache.tpl = angular.module('tpl.partials', []);
+        </script>
     </body>
 </html>
