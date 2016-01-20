@@ -88,10 +88,10 @@ module.exports = function (grunt) {
         options: {
           base: [
             'app',
+            'app/js',
             CONF.closureLibrary,
             CONF.componentPath,
             CONF.tmpPath,
-            CONF.buildPath + '/tpl'
           ],
         },
       }
@@ -150,7 +150,7 @@ module.exports = function (grunt) {
           closure_entry_point: CONF.entryPoint,
           source_map_format: 'V3',
           create_source_map: 'build/source-map.js.map',
-          formatting: 'PRETTY_PRINT',
+          //formatting: 'PRETTY_PRINT',
           //debug: null,
           output_wrapper: CONF.outputWrapper
 
@@ -190,6 +190,17 @@ module.exports = function (grunt) {
         }
       }
     },
+    usemin: {
+      html: 'build/index.html',
+      options: {
+        blockReplacements: {
+          squash: function () {
+              return '<script src="/app.js"></script>';
+          }
+        },
+        dest: 'build'
+      }
+    },
 
     // clean, uglify and concat aid in building
     clean: {
@@ -221,7 +232,13 @@ module.exports = function (grunt) {
     copy: {
       html: {
         files: [{
-          src: 'app/index.dist.html',
+          src: 'app/index.html',
+          dest: 'build/index.html',
+        }]
+      },
+      htmldist: {
+        files: [{
+          src: 'build/index.html',
           dest: 'dist/index.html',
         }]
       },
@@ -291,6 +308,11 @@ module.exports = function (grunt) {
     'mocha'
 */
   ]);
+  grunt.registerTask('build-html', [
+    'copy:html',
+    'usemin:html',
+    'copy:htmldist'
+  ]);
   grunt.registerTask('build-common', [
     'jshint:all',
     'clean:build',
@@ -299,7 +321,7 @@ module.exports = function (grunt) {
     'closureBuilder:app',
     'uglify:vendor',
     'concat:js',
-    'copy:html',
+    'build-html',
   ]);
 
   grunt.registerTask('build-debug', [

@@ -12,6 +12,7 @@
 
         <div ui-view=""></div>
 
+        <!-- build:squash undef -->
         <script src="/angular/angular.js"></script>
         <script src="/angular-route/angular-route.js"></script>
         <script src="/angular-ui-router/release/angular-ui-router.js"></script>
@@ -24,5 +25,6 @@
             goog.require('demo');
             cache.tpl = angular.module('tpl.partials', []);
         </script>
+        <!-- endbuild -->
     </body>
 </html>
