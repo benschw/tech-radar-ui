@@ -6,3 +6,4 @@ dist
 .sass-cache
 closure
 npm-debug.log
+.tmp

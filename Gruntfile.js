@@ -30,7 +30,6 @@ module.exports = function (grunt) {
     // closure
     closureCompiler: process.env.CLOSURE_COMPILER || 'closure/compiler.jar',
     closureLibrary: process.env.CLOSURE_PATH || 'closure/closure-library',
-    closureLinter: 'closure/closure-linter/closure_linter',
     externs: [
       'closure/closure-compiler/contrib/externs/angular-1.4*.js',
       'closure/closure-compiler/contrib/externs/angular_ui_router.js',
@@ -67,6 +66,20 @@ module.exports = function (grunt) {
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   grunt.initConfig({
+
+    jshint: {
+      options: {
+        jshintrc: '.jshintrc',
+        reporter: require('jshint-stylish')
+      },
+      all: {
+        src: [
+          'Gruntfile.js',
+          CONF.appPath
+        ]
+      },
+    },
+
     watch: {
       livereload: {
         options: {
@@ -99,17 +112,11 @@ module.exports = function (grunt) {
     open: {
       server: {
         path: 'http://localhost:<%= connect.options.port %>'
-      },
-      test: {
-        path: 'http://localhost:<%= connect.test.options.port %>/test/'
       }
     },
 
 
-
-    //
     // Closure
-    //
     closureDepsWriter: {
       options: {
         closureLibraryPath: CONF.closureLibrary
@@ -118,7 +125,6 @@ module.exports = function (grunt) {
         options: {
           root_with_prefix: [
             '"' + CONF.appPath + ' ../../../js"',
-            //'"' + CONF.componentPath + ' ../../../components"'
           ]
         },
         dest: '' + CONF.tmpPath + '/deps.js'
@@ -163,14 +169,14 @@ module.exports = function (grunt) {
           CONF.buildPath + "/tpl"
 
         ],
-        dest: 'build/compiled.js'
+        dest: 'build/app.js'
       }
     },
 
     // cache templates
     ngtemplates:  {
       app:        {
-        cwd:      'app/js',
+        cwd:      CONF.appPath,
         src:      '**/**.html',
         dest:     'build/tpl/app.templates.js',
         options: {
@@ -190,6 +196,15 @@ module.exports = function (grunt) {
         }
       }
     },
+
+    useminPrepare: {
+      html: 'build/index.html',
+      options: {
+        root: './bower_components',
+        dest: 'build',
+        assetsDirs: ['bower_components']
+      }
+    },
     usemin: {
       html: 'build/index.html',
       options: {
@@ -198,7 +213,7 @@ module.exports = function (grunt) {
               return '<script src="/app.js"></script>';
           }
         },
-        dest: 'build'
+        assetsDirs: ['bower_components']
       }
     },
 
@@ -206,21 +221,8 @@ module.exports = function (grunt) {
     clean: {
       build: ['build'],
       dist: ['dist'],
-      server: ['build']
-    },
-    uglify: {
-      vendor: {
-        files: {
-          'build/vendor.js': CONF.vendorFiles
-        }
-      }
     },
     concat: {
-      js: {
-        src: ['build/vendor.js', 'build/compiled.js'],
-        dest: 'build/app.js',
-
-      },
       jsdebug: {
         src: 'build/app.js',
         dest: 'build/app.debug.js',
@@ -246,6 +248,9 @@ module.exports = function (grunt) {
         files: [{
           src: 'build/app.js',
           dest: 'dist/app.js',
+        },{
+          src: 'build/vendor.js',
+          dest: 'dist/vendor.js',
         }]
       },
       jsdebug: {
@@ -255,73 +260,40 @@ module.exports = function (grunt) {
         },{
           src: 'build/app.debug.js',
           dest: 'dist/app.js',
+        },{
+          src: 'build/vendor.js',
+          dest: 'dist/vendor.js',
         }]
       }
     },
 
-    jshint: {
-      options: {
-        jshintrc: '.jshintrc',
-        reporter: require('jshint-stylish')
-      },
-      all: {
-        src: [
-          'Gruntfile.js',
-          CONF.appPath
-        ]
-      },
-    },
 
-  }); // end grunt.initConfig();
-
-
-
-  //
-  //
-  // initConfig END
-  //
-  // Register tasks
-  //
-  //
-  grunt.registerTask('server', function (target) {
-    if (target === 'test') {
-  /*
-      grunt.task.run([
-        'clean:server',
-        'connect:test',
-        'open:test',
-        'watch:test'
-      ]);
-*/
-    } else {
-      grunt.task.run([
-        'clean:server',
-        'connect:app',
-        'watch:livereload'
-      ]);
-    }
   });
-  grunt.registerTask('test', [
-/*
-    'clean:server',
-    'connect:test',
-    'mocha'
-*/
-  ]);
-  grunt.registerTask('build-html', [
-    'copy:html',
-    'usemin:html',
-    'copy:htmldist'
-  ]);
+
+
+
+  // Register tasks
+
+  grunt.registerTask('server', function () {
+    grunt.task.run([
+      'connect:app',
+      'watch:livereload'
+    ]);
+  });
+
   grunt.registerTask('build-common', [
     'jshint:all',
     'clean:build',
     'clean:dist',
     'ngtemplates',
     'closureBuilder:app',
-    'uglify:vendor',
-    'concat:js',
-    'build-html',
+
+    'copy:html',
+    'useminPrepare',
+    'concat:generated',
+    'uglify:generated',
+    'usemin',
+    'copy:htmldist'
   ]);
 
   grunt.registerTask('build-debug', [
@@ -342,10 +314,6 @@ module.exports = function (grunt) {
   grunt.registerTask('default', [
 	'test',
     'build'
-  ]);
-
-  grunt.registerTask('lint', [
-    'closureLint:app'
   ]);
 
   grunt.registerTask('fixstyle', [
