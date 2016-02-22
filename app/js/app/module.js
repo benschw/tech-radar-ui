@@ -5,12 +5,13 @@
 goog.provide('demo.app.module');
 
 goog.require('cache.tpl');
+goog.require('demo.app.Draggable');
 goog.require('demo.app.Config');
 goog.require('demo.app.HomeCtrl');
 goog.require('demo.app.MessagesCtrl');
 
 
-/** 
+/*
  * @type {angular.Module} 
  */
 demo.app.module = angular.module('demo.app', [
@@ -21,5 +22,6 @@ demo.app.module = angular.module('demo.app', [
 	])
 	.config(demo.app.Config)
 	.controller('demo.app.HomeCtrl', demo.app.HomeCtrl)
-	.controller('demo.app.MessagesCtrl', demo.app.MessagesCtrl);
+	.controller('demo.app.MessagesCtrl', demo.app.MessagesCtrl)
+	.directive('myDraggable', ['$document', demo.app.Draggable]);
 

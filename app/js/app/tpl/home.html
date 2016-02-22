@@ -1,21 +1,28 @@
 <div class="page-header">
-	<h1>Home <small>{{message}}</small></h1>
 
-	<svg ng-click="draw($event)">
+	<h1>Home <small>{{message}}</small>
+	</h1>
+	<label>Edit</label>
+	<input type="checkbox" ng-model="editable" /><br />
+
+
+	<svg>
 		<g ng-repeat="el in elements">
 			<circle ng-attr-cx="{{el.x}}" 
 					ng-attr-cy="{{el.y}}" 
 					ng-attr-r="{{el.r}}" 
-					stroke-width="{{el.sw||sw}}" 
-					ng-class="{focus:el.f}"
+					stroke-width="{{el.sw}}" 
+					ng-class="{focus:!editable && el.f}"
 					ng-click="selectItem(el)"
+					my-draggable
 				>
 			</circle>
 		</g>
+
 	</svg>
 	
 	<div class="well" ng-hide="current == null">
-		{{current.x}}, {{current.y}}
+		{{current.title}}: {{current.x}}, {{current.y}}
 
 	</div>
 
