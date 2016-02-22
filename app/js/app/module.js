@@ -10,7 +10,6 @@ goog.require('demo.app.HomeCtrl');
 goog.require('demo.app.MessagesCtrl');
 
 
-
 /** 
  * @type {angular.Module} 
  */
@@ -23,6 +22,4 @@ demo.app.module = angular.module('demo.app', [
 	.config(demo.app.Config)
 	.controller('demo.app.HomeCtrl', demo.app.HomeCtrl)
 	.controller('demo.app.MessagesCtrl', demo.app.MessagesCtrl);
-
-
 

@@ -34,6 +34,7 @@ module.exports = function (grunt) {
       'closure/closure-compiler/contrib/externs/angular-1.4*.js',
       'closure/closure-compiler/contrib/externs/angular_ui_router.js',
       'closure/closure-compiler/contrib/externs/ui-bootstrap.js',
+      'closure/closure-compiler/contrib/externs/google_visualization_api.js'
     ],
 
 

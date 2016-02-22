@@ -1,0 +1,14 @@
+svg {
+  height: 300px;
+  width: 500px;
+  background-color: #eee;
+}
+svg circle {
+  fill: rgba(0,0,255,0.4);
+  stroke: rgba(0,0,255,0.3);
+}
+svg .focus {
+  stroke: rgba(178,145,56,.7);
+    fill: rgba(178,255,255,.7);
+}
+

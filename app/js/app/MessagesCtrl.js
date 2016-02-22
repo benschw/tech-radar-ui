@@ -5,6 +5,7 @@
 goog.provide('demo.app.MessagesCtrl');
 
 
+
 /**
  * Messages controller
  * @param  {angular.Scope=} $scope
@@ -17,5 +18,6 @@ demo.app.MessagesCtrl = function($scope) {
 	 * @export
 	 */
 	$scope.message = 'Hello Messages';
+
 };
 
