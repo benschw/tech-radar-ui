@@ -17,9 +17,15 @@ demo.app.HomeCtrl = function($scope) {
 	 * @export
 	 */
 	$scope.message = 'Hello Home';
+
+	$scope.graph = {
+		editable: true,
+		radius: 300
+	};
+
 	$scope.editable = true;
 	$scope.current = null;
-	var radius = 12;
+	var radius = 10;
 
 	$scope.selectItem = function(el) {
 		for(var i=0; i<$scope.elements.length; i++) {
@@ -52,16 +58,9 @@ demo.app.HomeCtrl = function($scope) {
 		};
 	};
 	
-	var i = 0;
-	$scope.elements = [
-		NewEl(i, "Item " + i++, Math.random() * 500, Math.random() * 300),
-		NewEl(i, "Item " + i++, Math.random() * 500, Math.random() * 300),
-		NewEl(i, "Item " + i++, Math.random() * 500, Math.random() * 300),
-		NewEl(i, "Item " + i++, Math.random() * 500, Math.random() * 300),
-		NewEl(i, "Item " + i++, Math.random() * 500, Math.random() * 300),
-		NewEl(i, "Item " + i++, Math.random() * 500, Math.random() * 300),
-		NewEl(i, "Item " + i++, Math.random() * 500, Math.random() * 300),
-		NewEl(i, "Item " + i++, Math.random() * 500, Math.random() * 300),
-		NewEl(i, "Item " + i++, Math.random() * 500, Math.random() * 300)
-	];
+	$scope.elements = [];
+
+	for(var i=0; i<20; i++) {
+		$scope.elements.push(NewEl(i, "Item " + i, Math.random() * $scope.graph.radius * 2, Math.random() * $scope.graph.radius * 2));
+	}
 };

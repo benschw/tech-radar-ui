@@ -6,7 +6,12 @@
 	<input type="checkbox" ng-model="editable" /><br />
 
 
-	<svg>
+	<svg ng-attr-height="{{(graph.radius * 2) + 2}}" ng-attr-width="{{(graph.radius * 2) + 2}}">
+		<circle class="ring" ng-attr-cx="{{graph.radius + 1}}" ng-attr-cy="{{graph.radius + 1}}" ng-attr-r="{{graph.radius}}" />
+		<circle class="ring" ng-attr-cx="{{graph.radius + 1}}" ng-attr-cy="{{graph.radius + 1}}" ng-attr-r="{{graph.radius * .85}}" />
+		<circle class="ring" ng-attr-cx="{{graph.radius + 1}}" ng-attr-cy="{{graph.radius + 1}}" ng-attr-r="{{graph.radius * .625}}" />
+		<circle class="ring" ng-attr-cx="{{graph.radius + 1}}" ng-attr-cy="{{graph.radius + 1}}" ng-attr-r="{{graph.radius * .4}}" />
+		
 		<g ng-repeat="el in elements">
 			<circle ng-attr-cx="{{el.x}}" 
 					ng-attr-cy="{{el.y}}" 

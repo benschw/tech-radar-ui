@@ -1,7 +1,5 @@
 svg {
-  height: 300px;
-  width: 500px;
-  background-color: #eee;
+  fill: rgba(178,255,255,.3);
 }
 svg circle {
   fill: rgba(0,0,255,0.4);
@@ -12,3 +10,8 @@ svg .focus {
     fill: rgba(178,255,255,.7);
 }
 
+.ring {
+	stroke: rgba(0,0,255,0.2);
+	fill: rgba(0,0,255,0.1);
+	stroke-width: 2px;
+}
