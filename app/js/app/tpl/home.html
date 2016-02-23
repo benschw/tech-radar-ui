@@ -11,7 +11,11 @@
 		<circle class="ring" ng-attr-cx="{{graph.radius + 1}}" ng-attr-cy="{{graph.radius + 1}}" ng-attr-r="{{graph.radius * .85}}" />
 		<circle class="ring" ng-attr-cx="{{graph.radius + 1}}" ng-attr-cy="{{graph.radius + 1}}" ng-attr-r="{{graph.radius * .625}}" />
 		<circle class="ring" ng-attr-cx="{{graph.radius + 1}}" ng-attr-cy="{{graph.radius + 1}}" ng-attr-r="{{graph.radius * .4}}" />
-		
+	
+		<line  class="ring" x1="0" ng-attr-y1="{{graph.radius + 1}}" ng-attr-x2="{{(graph.radius * 2) + 2}}" ng-attr-y2="{{graph.radius + 2}}" />
+		<line  class="ring" y1="0" ng-attr-x1="{{graph.radius + 1}}" ng-attr-y2="{{(graph.radius * 2) + 2}}" ng-attr-x2="{{graph.radius + 2}}" />
+
+
 		<g ng-repeat="el in elements">
 			<circle ng-attr-cx="{{el.x}}" 
 					ng-attr-cy="{{el.y}}" 
