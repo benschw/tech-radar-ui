@@ -29,7 +29,6 @@ demo.app.Draggable = function($document) {
 
 		element.on('mousedown', function(event) {
 			if (!scope.editable) {
-				console.log("not editable")
 				return;
 			}
 			// Prevent default dragging of selected content

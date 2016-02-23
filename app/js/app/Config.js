@@ -29,10 +29,7 @@ demo.app.Config = function ($stateProvider, $urlRouterProvider) {
 		views: {
 			'header' : {
 				templateUrl: 'app/tpl/header.html'
-			},
-			'left' : {
-				templateUrl: 'app/tpl/left.html'
-			},
+			}
 		}
 	};
 	var home = {

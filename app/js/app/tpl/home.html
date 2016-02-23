@@ -4,35 +4,33 @@
 	</h1>
 	<label>Edit</label>
 	<input type="checkbox" ng-model="editable" /><br />
-
-
-	<svg ng-attr-height="{{(graph.radius * 2) + 2}}" ng-attr-width="{{(graph.radius * 2) + 2}}">
-		<circle class="ring" ng-attr-cx="{{graph.radius + 1}}" ng-attr-cy="{{graph.radius + 1}}" ng-attr-r="{{graph.radius}}" />
-		<circle class="ring" ng-attr-cx="{{graph.radius + 1}}" ng-attr-cy="{{graph.radius + 1}}" ng-attr-r="{{graph.radius * .85}}" />
-		<circle class="ring" ng-attr-cx="{{graph.radius + 1}}" ng-attr-cy="{{graph.radius + 1}}" ng-attr-r="{{graph.radius * .625}}" />
-		<circle class="ring" ng-attr-cx="{{graph.radius + 1}}" ng-attr-cy="{{graph.radius + 1}}" ng-attr-r="{{graph.radius * .4}}" />
 	
-		<line  class="ring" x1="0" ng-attr-y1="{{graph.radius + 1}}" ng-attr-x2="{{(graph.radius * 2) + 2}}" ng-attr-y2="{{graph.radius + 2}}" />
-		<line  class="ring" y1="0" ng-attr-x1="{{graph.radius + 1}}" ng-attr-y2="{{(graph.radius * 2) + 2}}" ng-attr-x2="{{graph.radius + 2}}" />
+
+	<div id="combo-radar"> 
+		<div class="radar-wrapper theme-{{radar.view}}" ng-repeat="radar in graphs">
+			<svg ng-attr-height="{{radar.style.h}}" ng-attr-width="{{radar.style.w}}">
+		
+				<line ng-repeat="axis in radar.style.axes" class="ring" ng-attr-x1="{{axis[0]}}" ng-attr-y1="{{axis[1]}}" ng-attr-x2="{{axis[2]}}" ng-attr-y2="{{axis[3]}}" />
+				<path ng-repeat="ring in radar.style.rings.arcs" class="ring" ng-attr-d="{{ring}}" />
+				<path ng-repeat="ring in radar.style.rings.fills" class="circle" ng-attr-d="{{ring}}" />
 
 
-		<g ng-repeat="el in elements">
-			<circle ng-attr-cx="{{el.x}}" 
-					ng-attr-cy="{{el.y}}" 
-					ng-attr-r="{{el.r}}" 
-					stroke-width="{{el.sw}}" 
-					ng-class="{focus:!editable && el.f}"
-					ng-click="selectItem(el)"
-					my-draggable
-				>
-			</circle>
-		</g>
+				<g class="marker" ng-repeat="el in radar.markers" my-draggable ng-click="radar.selectItem(el)">
+					<circle ng-attr-cx="{{el.coord.dx}}" ng-attr-cy="{{el.coord.dy}}" ng-attr-r="{{radar.markerRadius}}" ng-class="{focus:!editable && el.f}"></circle>
+					<text text-anchor="middle" ng-attr-x="{{el.coord.dx}}" ng-attr-y="{{el.coord.dy}}" dx="0" dy="5">
+						{{el.id}}
+					</text>
+				</g>
+			</svg>
+		</div>
 
-	</svg>
+	</div>
 	
-	<div class="well" ng-hide="current == null">
-		{{current.title}}: {{current.x}}, {{current.y}}
-
+	<div class="well" ng-hide="graphs[0].current == null">
+		{{graphs[0].current.title}}: {{graphs[0].current.coord.dx}}, {{graphs[0].current.coord.dy}}
+	</div>
+	<div class="well" ng-hide="graphs[1].current == null">
+		{{graphs[1].current.title}}: {{graphs[1].current.coord.dx}}, {{graphs[1].current.coord.dy}}
 	</div>
 
 </div>

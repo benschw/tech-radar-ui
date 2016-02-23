@@ -1,17 +1,101 @@
-svg {
-  fill: rgba(178,255,255,.3);
+html, body { height: 100%; width: 100%; margin: 0; }
+#combo-radar {
+	width: 490px;
 }
-svg circle {
-  fill: rgba(0,0,255,0.4);
-  stroke: rgba(0,0,255,0.3);
-}
-svg .focus {
-  stroke: rgba(178,145,56,.7);
-    fill: rgba(178,255,255,.7);
+.radar-wrapper {
+	float: left;
+	display: block;
+	width: 242px;
+	height: 242px;
+	border: 0px solid black;
 }
 
-.ring {
-	stroke: rgba(0,0,255,0.2);
-	fill: rgba(0,0,255,0.1);
+svg {
+	padding: 0;
+	border: none;
+	margin: 0;
+	fill: rgba(178,255,255,.3);
+}
+svg circle {
+	stroke-width: 1;
+}
+
+.theme-tr circle {
+	fill: rgba(127,218,36,0.4);
+	stroke: rgba(127,218,36,0.3);
+}
+.theme-tr .focus {
+	fill: rgba(127,218,36,0.3);
+	stroke: rgba(127,218,36,0.1);
+}
+.theme-tr .ring {
+	stroke: rgba(127,218,36,0.2);
+	fill: none;
 	stroke-width: 2px;
+}
+.theme-tr .circle {
+	fill: rgba(127,218,36,0.1);
+}
+.theme-tr .marker text {
+	fill: rgba(255,255,255,.8);
+}
+
+.theme-tl circle {
+	fill: rgba(0,0,255,0.4);
+	stroke: rgba(0,0,255,0.3);
+}
+.theme-tl .focus {
+	stroke: rgba(0,0,255,0.3);
+	fill: rgba(178,255,255,.0);
+}
+.theme-tl .ring {
+	stroke: rgba(0,0,255,0.2);
+	fill: none;
+	stroke-width: 2px;
+}
+.theme-tl .circle {
+	fill: rgba(0,0,255,0.1);
+}
+.theme-tl .marker text {
+	fill: rgba(255,255,255,.6);
+}
+
+.theme-bl circle {
+	fill: rgba(218,127,36,0.4);
+	stroke: rgba(218,127,36,0.3);
+}
+.theme-bl .focus {
+	stroke: rgba(218,127,36,0.3);
+	fill: rgba(218,127,36,.0);
+}
+.theme-bl .ring {
+	stroke: rgba(218,127,36,0.2);
+	fill: none;
+	stroke-width: 2px;
+}
+.theme-bl .circle {
+	fill: rgba(218,127,36,0.1);
+}
+.theme-bl .marker text {
+	fill: rgba(255,255,255,.6);
+}
+
+.theme-br circle {
+	fill: rgba(218,36,218,0.4);
+	stroke: rgba(218,36,218,0.3);
+}
+.theme-br .focus {
+	stroke: rgba(218,36,218,0.3);
+	fill: rgba(218,36,218,.0);
+}
+.theme-br .ring {
+	stroke: rgba(218,36,218,0.2);
+	fill: none;
+	stroke-width: 2px;
+}
+.theme-br .circle {
+	fill: rgba(218,36,218,0.1);
+}
+.theme-br .marker text {
+	fill: rgba(255,255,255,.6);
 }
