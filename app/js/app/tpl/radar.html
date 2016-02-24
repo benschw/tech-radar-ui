@@ -1,0 +1,73 @@
+<div class="page-header">
+	<h1>{{message}}</h1>
+</div>
+
+<div class="col-md-6">
+	<div class="panel-body">
+
+		<div class="panel panel-default" ng-repeat="type in radar.getTypes()">
+			<div class="panel-heading">
+				{{type}}
+			</div>
+			<div class="list-group item-list">
+				<div ng-repeat="item in radar.markers"
+						id="marker-{{item.id}}-{{type}}"
+						class="list-group-item"
+						ng-click="radar.toggleMarker(item)"
+						ng-class="{focus:item.f, hover:item.h && !item.f}"
+						ng-mouseenter="radar.enterHover(item)"
+						ng-mouseleave="radar.exitHover(item)"
+						ng-hide="item.type != type"
+					>
+					{{item.title}}
+					<div ng-hide="item.id !== radar.current.id">
+						{{item.coord.x}}, {{item.coord.y}}
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<div class="col-md-6"> 
+
+	<div class="panel-body affix nav"> 
+
+		<div id="quadrant-radar"> 
+			<svg ng-attr-height="{{radar.style.h}}" ng-attr-width="{{radar.style.w}}" class="radar-wrapper theme-{{radar.view}}">
+			
+				<g class="graph-rings">
+					<line ng-repeat="axis in radar.style.axes" class="ring-axis" ng-attr-x1="{{axis[0]}}" ng-attr-y1="{{axis[1]}}" ng-attr-x2="{{axis[2]}}" ng-attr-y2="{{axis[3]}}" />
+					<path ng-repeat="ring in radar.style.rings.arcs" class="ring-arc" ng-attr-d="{{ring}}" />
+					<path ng-repeat="ring in radar.style.rings.fills" class="ring-fill" ng-attr-d="{{ring}}" />
+				</g>
+	
+				<g class="marker" ng-repeat="el in radar.markers" 
+						my-draggable="{{el.id}}"
+						ng-click="radar.toggleMarker(el)"
+						ng-mouseenter="radar.enterHover(el)"
+						ng-mouseleave="radar.exitHover(el)"
+						scroll-on-click="{{el.id}}-{{el.type}}"
+					>
+					<circle ng-attr-cx="{{el.coord.x}}" ng-attr-cy="{{el.coord.y}}" 
+							ng-attr-r="{{radar.markerRadius}}" 
+							ng-class="{focus:el.f, hover:el.h && !el.f}"
+							></circle>
+					<text class="number" text-anchor="middle" ng-attr-x="{{el.coord.x}}" ng-attr-y="{{el.coord.y}}" dx="0" dy="5">
+						{{el.id}}
+					</text>
+					<title>{{el.title}}</title>
+				</g>
+			</svg>
+
+		</div>
+		<label uib-tooltip="edit">Edit</label>
+						
+		<input type="checkbox" ng-model="editable" /><br />
+
+	</div>
+</div>
+	
+
+

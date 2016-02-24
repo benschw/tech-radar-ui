@@ -1,48 +1,79 @@
 html, body { height: 100%; width: 100%; margin: 0; }
+
+.item-list .focus {
+	background-color: #e6f2ff;
+}
+.item-list .hover {
+	background-color: #eee;
+}
+.item-list .list-group-item {
+	padding: 5px;
+}
 #combo-radar {
 	width: 484px;
 	height: 484px;
 }
+#quadrant-radar {
+	width: 352px;
+	height: 352px;
+}
 .radar-wrapper {
 	float: left;
 	display: block;
-	width: 242px;
-	height: 242px;
-	border: 0px solid black;
+	fill-opacity: .4;
+	stroke-opacity: .3;
 }
 
 .theme-tr {
-	fill: rgba(127,218,36,0.4);
-	stroke: rgba(127,218,36,0.3);
+	fill: #009933;
+	stroke: #009933;
 }
 .theme-tl {
-	stroke: rgba(0,0,255,.4);
-	fill: rgba(0,0,255,.3);
+	stroke: #0000ff;
+	fill: #0000ff;
 }
 .theme-bl {
-	fill: rgba(218,127,36,0.4);
-	stroke: rgba(218,127,36,0.3);
+	fill: #ff0000;
+	stroke: #ff0000;
 }
 .theme-br {
-	stroke: rgba(218,36,218,0.4);
-	fill: rgba(218,36,218,.3);
+	stroke: #cc33ff;
+	fill: #cc33ff;
 }
-.radar-wrapper .ring {
+.radar-wrapper .graph-rings .ring-axis {
+}
+.radar-wrapper .graph-rings .ring-arc {
 	stroke-opacity: .2;
 	fill: none;
 	stroke-width: 2px;
 }
-.radar-wrapper .circle {
+.radar-wrapper .graph-rings .ring-fill {
 	fill-opacity: .2;
 }
-.radar-wrapper .marker text {
-	stroke: none;
-	fill: rgba(255,255,255,.9);
-}
-
 .radar-wrapper .marker circle {
 	fill-opacity: .4;
 	stroke-opacity: .3;
 	stroke-width: 1;
 }
+.radar-wrapper .marker circle.focus {
+	fill: #ffffff;
+	fill-opacity: .5;
+	stroke-opacity: .3;
+	stroke-width: 1;
+}
+.radar-wrapper .marker circle.hover {
+	fill-opacity: .1;
+	stroke-opacity: .3;
+	stroke-width: 1;
+}
+.radar-wrapper .marker .number {
+	stroke: none;
+	fill: rgba(255,255,255,.9);
+}
+.radar-wrapper .marker .title {
+	stroke: none;
+	fill: rgba(255,255,255,.9);
+}
+
+
 

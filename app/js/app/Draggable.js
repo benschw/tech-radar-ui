@@ -4,10 +4,6 @@
  */
 goog.provide('demo.app.Draggable');
 
-goog.require('cache.tpl');
-goog.require('demo.app.Config');
-goog.require('demo.app.HomeCtrl');
-goog.require('demo.app.MessagesCtrl');
 
 /**
  * Draggable Directive
@@ -42,15 +38,21 @@ demo.app.Draggable = function($document) {
 		function mousemove(event) {
 			y = event.pageY - startY;
 			x = event.pageX - startX;
+
+			transform()
+		}
+		function transform() {
 			element.css({
 				transform: 'translate('+x+'px,'+y+'px)',
 				WebkitTransform: 'translate('+x+'px,'+y+'px)'
 			});
 			element.css('transform');
 		}
-
 		function mouseup() {
-			event.preventDefault();
+			scope.radar.updateLocation(attr.myDraggable, x, y)
+			x = 0;
+			y = 0
+			transform()
 			$document.off('mousemove', mousemove);
 			$document.off('mouseup', mouseup);
 		}

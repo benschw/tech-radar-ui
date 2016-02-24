@@ -42,21 +42,34 @@ demo.app.Config = function ($stateProvider, $urlRouterProvider) {
 			}
 		}
 	};
-	var messages = {
-		url: "/messages",
+	var techniques = {
+		url: "/techniques",
 		'parent': layout,
 		views: {
 			'main@root': {
-				controller: 'demo.app.MessagesCtrl',
-				templateUrl: 'app/tpl/messages.html'
+				controller: 'demo.app.RadarCtrl',
+				templateUrl: 'app/tpl/radar.html'
 			}
-		}
+		},
+		data: {view: "tl"}
+	};
+	var tools = {
+		url: "/tools",
+		'parent': layout,
+		views: {
+			'main@root': {
+				controller: 'demo.app.RadarCtrl',
+				templateUrl: 'app/tpl/radar.html'
+			}
+		},
+		data: {view: "tr"}
 	};
 	$stateProvider
 		.state('root', root)
 		.state('root.layout', layout)
-		.state('root.layout.messages', messages)
-		.state('root.layout.home', home);
+		.state('root.layout.home', home)
+		.state('root.layout.techniques', techniques)
+		.state('root.layout.tools', tools);
 };
 
 

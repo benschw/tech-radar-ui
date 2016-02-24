@@ -8,8 +8,7 @@ goog.require('cache.tpl');
 goog.require('demo.app.Draggable');
 goog.require('demo.app.Config');
 goog.require('demo.app.HomeCtrl');
-goog.require('demo.app.MessagesCtrl');
-
+goog.require('demo.app.RadarCtrl');
 
 /*
  * @type {angular.Module} 
@@ -22,6 +21,16 @@ demo.app.module = angular.module('demo.app', [
 	])
 	.config(demo.app.Config)
 	.controller('demo.app.HomeCtrl', demo.app.HomeCtrl)
-	.controller('demo.app.MessagesCtrl', demo.app.MessagesCtrl)
-	.directive('myDraggable', ['$document', demo.app.Draggable]);
-
+	.controller('demo.app.RadarCtrl', demo.app.RadarCtrl)
+	.directive('myDraggable', ['$document', demo.app.Draggable])
+	.directive('scrollOnClick', function() {
+		return {
+			restrict: 'A',
+			link: function(scope, $elm, $attr) {
+				$elm.on('click', function() {
+					var el = $("#marker-"+$attr.scrollOnClick)
+					$("body").animate({scrollTop: el.offset().top}, "slow");
+				});
+			}
+		}
+	});

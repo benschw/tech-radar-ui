@@ -22,62 +22,148 @@ demo.app.Radar = function(config) {
 	};
 
 	this.current = null;
+	this.hover = null;
+
+};
+demo.app.Radar.prototype.types = {
+	adopt: 0.4,
+	trial: 0.65,
+	assess: 0.85,
+	hold: 1
+};
+demo.app.Radar.prototype.getTypeRange = function(type) {
+	var data = {
+		adopt: [0, this.types.adopt],
+		trial: [this.types.adopt, this.types.trial],
+		assess: [this.types.trial, this.types.assess],
+		hold: [this.types.assess, this.types.hold]
+	};
+	return data[type];
+};
+
+demo.app.Radar.prototype.getTypes = function() {
+	return ["adopt", "trial", "assess", "hold"];
+};
+demo.app.Radar.prototype.updateLocation = function(id, dx, dy) {
+	for(var i=0; i<this.markers.length; i++) {
+		if (this.markers[i].id == id) {
+			this.markers[i].coord.x += dx;
+			this.markers[i].coord.y += dy;
+			var tmp = this.getPolar(this.markers[i].coord.x, this.markers[i].coord.y);
+			this.markers[i].deg = tmp.deg;
+			this.markers[i].mag = tmp.mag;
+			console.log(this.markers[i]);
+		}
+	}
+	
+};
+demo.app.Radar.prototype.getTypeFromMagnitude = function(mag) {
+	mag = mag / 100;
+	if (mag < this.types.adopt) {
+		return "adopt";
+	} else if (mag < this.types.trial) {
+		return "trial";
+	} else if (mag < this.types.assess) {
+		return "assess";
+	} else if (mag < this.types.hold) {
+		return "hold";
+	}
+};
+
+demo.app.Radar.prototype.enterHover = function(marker) {
+	for(var i=0; i<this.markers.length; i++) {
+		if (this.markers[i].id === marker.id) {
+			this.markers[i].h = true;
+		}
+	}
+	this.hover = marker;
+};
+demo.app.Radar.prototype.exitHover = function(marker) {
+	for(var i=0; i<this.markers.length; i++) {
+		if (this.markers[i].id === marker.id) {
+			this.markers[i].h = false;
+		}
+	}
+	this.hover = null;
+};
+demo.app.Radar.prototype.toggleMarker = function(el) {
+	for(var i=0; i<this.markers.length; i++) {
+
+		if (el === null || this.markers[i].id !== el.id) {
+			this.markers[i].f = false;
+		} else {
+			if (this.markers[i].f) {
+				this.markers[i].f = false;
+				this.current = null;
+			} else {
+				this.markers[i].f = true;
+				this.current = el;
+			}
+		}
+	}
 };
 
 demo.app.Radar.prototype.addMarker = function(id, title, deg, mag) {
 	this.markers.push({
 		"id": id,
 		"title": title,
+		"type": this.getTypeFromMagnitude(mag),
 		"coord": this.getCoordinates(deg, mag),
-		f: false
+		"mag": mag,
+		"deg": deg,
+		f: false,
+		h: false
 	});
 };
 
-demo.app.Radar.prototype.selectItem = function(el) {
-	for(var i=0; i<this.markers.length; i++) {
-
-		if (el === null || this.markers[i].id !== el.id) {
-			console.log(this.markers[i].title);
-			this.markers[i].f = false;
-		} else {
-			if (this.markers[i].f) {
-				this.markers[i].f = false;
-				this.current = null;
-				console.log("unselected");
-			} else {
-				this.markers[i].f = true;
-				this.current = el;
-				console.log("selected");
-			}
-		}
+demo.app.Radar.prototype.getPolar = function(x, y) {
+	if (this.view === "tl") {
+		return {
+			"deg": null,
+			"mag": null
+		};
+	} else if (this.view === "tr") {
+		return {
+			"deg": null,
+			"mag": null
+		};
+	} else if (this.view === "bl") {
+		return {
+			"deg": null,
+			"mag": null
+		};
+	} else if (this.view === "br") {
+		return {
+			"deg": null,
+			"mag": null
+		};
 	}
-};
 
+};
 demo.app.Radar.prototype.getCoordinates = function(deg, mag) {
 	var rad = deg * (Math.PI / 180);
 		
 	var x = mag * Math.cos(rad);
 	var y = mag * Math.sin(rad);
-	console.log([x,y]);
 	if (this.view === "tl") {
 		return {
-			"dx": Math.round((100 + x) / 100 * this.radius),
-			"dy": Math.round((100 - y) / 100 * this.radius)
+			"x": Math.round((100 + x) / 100 * this.radius),
+			"y": Math.round((100 - y) / 100 * this.radius)
 		};
 	} else if (this.view === "tr") {
 		return {
-			"dx": Math.round(x / 100 * this.radius),
-			"dy": Math.round((100 - y) / 100 * this.radius)
+			"x": Math.round(x / 100 * this.radius),
+			"y": Math.round((100 - y) / 100 * this.radius)
 		};
 	} else if (this.view === "bl") {
 		return {
-			"dx": Math.round((100 + x) / 100 * this.radius),
-			"dy": Math.round(Math.abs(y) / 100 * this.radius)
+			"x": Math.round((100 + x) / 100 * this.radius),
+			"y": Math.round(Math.abs(y) / 100 * this.radius)
 		};
 	} else if (this.view === "br") {
 		return {
-			"dx": Math.round(x / 100 * this.radius),
-			"dy": Math.round(Math.abs(y) / 100 * this.radius)
+			"x": Math.round(x / 100 * this.radius),
+			"y": Math.round(Math.abs(y) / 100 * this.radius)
 		};
 	}
 };
@@ -160,11 +246,11 @@ demo.app.Radar.prototype.getRings = function() {
 		return rings;
 	}
 
+	rings = concatRings(rings, this.getRing(this.types.hold));
+	rings = concatRings(rings, this.getRing(this.types.assess));
+	rings = concatRings(rings, this.getRing(this.types.trial));
+	rings = concatRings(rings, this.getRing(this.types.adopt));
 
-	rings = concatRings(rings, this.getRing(1));
-	rings = concatRings(rings, this.getRing(0.85));
-	rings = concatRings(rings, this.getRing(0.65));
-	rings = concatRings(rings, this.getRing(0.40));
 	return rings;
 };
 

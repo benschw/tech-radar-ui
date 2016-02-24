@@ -17,7 +17,9 @@ demo.app.HomeCtrl = function($scope) {
 	 * @export
 	 */
 	$scope.message = 'Hello Home';
-	
+
+
+
 
 	$scope.editable = true;
 	$scope.graphs = [
@@ -43,17 +45,17 @@ demo.app.HomeCtrl = function($scope) {
 		}),
 	];
 
-
-	for(var i=0; i<5; i++) {
+	var i;
+	for(i=0; i<5; i++) {
 		$scope.graphs[0].addMarker(i, "tl item "+i, Math.random() * 90 + 90, Math.random() * 100);
 	}
-	for(var i=0; i<5; i++) {
+	for(i=0; i<5; i++) {
 		$scope.graphs[1].addMarker(i, "tr item "+i, Math.random() * 90, Math.random() * 100);
 	}
-	for(var i=0; i<5; i++) {
+	for(i=0; i<5; i++) {
 		$scope.graphs[2].addMarker(i, "tl item "+i, Math.random() * 90 + 180, Math.random() * 100);
 	}
-	for(var i=0; i<5; i++) {
+	for(i=0; i<5; i++) {
 		$scope.graphs[3].addMarker(i, "tl item "+i, Math.random() * 90 + 270, Math.random() * 100);
 	}
 };
