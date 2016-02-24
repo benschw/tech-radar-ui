@@ -41,11 +41,6 @@ demo.app.HomeCtrl = function($scope) {
 			markerRadius: 8,
 			view: "br",
 		}),
-		new demo.app.Radar({
-			radius: 120,
-			markerRadius: 8,
-			view: "f",
-		}),
 	];
 
 
@@ -60,8 +55,5 @@ demo.app.HomeCtrl = function($scope) {
 	}
 	for(var i=0; i<5; i++) {
 		$scope.graphs[3].addMarker(i, "tl item "+i, Math.random() * 90 + 270, Math.random() * 100);
-	}
-	for(var i=0; i<20; i++) {
-		$scope.graphs[4].addMarker(i, "full item "+i, Math.random() * 360, Math.random() * 100);
 	}
 };

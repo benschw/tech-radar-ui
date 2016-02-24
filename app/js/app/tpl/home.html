@@ -7,22 +7,19 @@
 	
 
 	<div id="combo-radar"> 
-		<div class="radar-wrapper theme-{{radar.view}}" ng-repeat="radar in graphs">
-			<svg ng-attr-height="{{radar.style.h}}" ng-attr-width="{{radar.style.w}}">
+		<svg ng-attr-height="{{radar.style.h}}" ng-attr-width="{{radar.style.w}}" class="radar-wrapper theme-{{radar.view}}" ng-repeat="radar in graphs">
 		
-				<line ng-repeat="axis in radar.style.axes" class="ring" ng-attr-x1="{{axis[0]}}" ng-attr-y1="{{axis[1]}}" ng-attr-x2="{{axis[2]}}" ng-attr-y2="{{axis[3]}}" />
-				<path ng-repeat="ring in radar.style.rings.arcs" class="ring" ng-attr-d="{{ring}}" />
-				<path ng-repeat="ring in radar.style.rings.fills" class="circle" ng-attr-d="{{ring}}" />
+			<line ng-repeat="axis in radar.style.axes" class="ring" ng-attr-x1="{{axis[0]}}" ng-attr-y1="{{axis[1]}}" ng-attr-x2="{{axis[2]}}" ng-attr-y2="{{axis[3]}}" />
+			<path ng-repeat="ring in radar.style.rings.arcs" class="ring" ng-attr-d="{{ring}}" />
+			<path ng-repeat="ring in radar.style.rings.fills" class="circle" ng-attr-d="{{ring}}" />
 
-
-				<g class="marker" ng-repeat="el in radar.markers" my-draggable ng-click="radar.selectItem(el)">
-					<circle ng-attr-cx="{{el.coord.dx}}" ng-attr-cy="{{el.coord.dy}}" ng-attr-r="{{radar.markerRadius}}" ng-class="{focus:!editable && el.f}"></circle>
-					<text text-anchor="middle" ng-attr-x="{{el.coord.dx}}" ng-attr-y="{{el.coord.dy}}" dx="0" dy="5">
-						{{el.id}}
-					</text>
-				</g>
-			</svg>
-		</div>
+			<g class="marker" ng-repeat="el in radar.markers" my-draggable ng-click="radar.selectItem(el)">
+				<circle ng-attr-cx="{{el.coord.dx}}" ng-attr-cy="{{el.coord.dy}}" ng-attr-r="{{radar.markerRadius}}" ng-class="{focus:!editable && el.f}"></circle>
+				<text text-anchor="middle" ng-attr-x="{{el.coord.dx}}" ng-attr-y="{{el.coord.dy}}" dx="0" dy="5">
+					{{el.id}}
+				</text>
+			</g>
+		</svg>
 
 	</div>
 	
