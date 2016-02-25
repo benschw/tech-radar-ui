@@ -8,10 +8,12 @@ goog.require('demo.app.Radar');
 /**
  * Home controller
  * @param  {angular.Scope=} $scope
+ * @param {*=} $scope
+ * @param {*=} $uibModal
  * @constructor
  * @ngInject
  */
-demo.app.RadarCtrl = function($scope, $state) {
+demo.app.RadarCtrl = function($scope, $state, $uibModal) {
 	var view = $state.current.data.view
 	/**
 	 * @type {string}
@@ -21,23 +23,35 @@ demo.app.RadarCtrl = function($scope, $state) {
 
 
 	$scope.editable = true;
+	
 	$scope.radar = new demo.app.Radar({
 		radius: 350,
 		markerRadius: 8,
 		view: view
 	});
 
-	$scope.newMarker = function() {
-		var p = $scope.radar.graph.getDefaultPosition();
-		var m = $scope.radar.addMarker({
-			"title": "New",
-			"deg": p.deg,
-			"mag": p.mag,
-			"new": true,
+	$scope.openEditor = function(marker) {
+
+		var modalInstance = $uibModal.open({
+			animation: true,
+			templateUrl: 'app/tpl/editor.html',
+			controller: 'demo.app.EditorCtrl',
+			size: 'lg',
+			resolve: {
+				radar: function() {
+					return $scope.radar;
+				},
+				marker: function() {
+					return marker;
+				}
+			}
 		});
 
-		$scope.radar.activateMarker(m);
+		modalInstance.result.then(function(ret) {
+			// returned
+		});
 	};
+
 	$scope.saveAll = function() {
 		console.log("saving...");
 	};

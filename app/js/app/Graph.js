@@ -160,7 +160,6 @@ demo.app.Graph.prototype.getCoordinates = function(deg, mag) {
 	}
 };
 demo.app.Graph.prototype.getDefaultPosition = function() {
-	var mag = 75; // assess
 	var deg = 45;
 	if (this.view === "tl") {
 		deg += 90;
@@ -171,8 +170,5 @@ demo.app.Graph.prototype.getDefaultPosition = function() {
 	} else if (this.view === "br") {
 		deg += 270;
 	}
-	return {
-		"mag": mag,
-		"deg": deg
-	};
+	return deg;
 };

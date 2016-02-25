@@ -11,6 +11,7 @@ goog.require('demo.app.ScrollOnClick');
 goog.require('demo.app.Config');
 goog.require('demo.app.HomeCtrl');
 goog.require('demo.app.RadarCtrl');
+goog.require('demo.app.EditorCtrl');
 
 /**
  * Draggable Directive
@@ -38,6 +39,7 @@ demo.app.module = angular.module('demo.app', [
 	.run(demo.app.ModuleRun)
 	.controller('demo.app.HomeCtrl', demo.app.HomeCtrl)
 	.controller('demo.app.RadarCtrl', demo.app.RadarCtrl)
+	.controller('demo.app.EditorCtrl', demo.app.EditorCtrl)
 	.directive('myDraggable', demo.app.Draggable)
 	.directive('scrollOnClick', demo.app.ScrollOnClick);
 

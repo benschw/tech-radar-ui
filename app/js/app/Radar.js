@@ -40,6 +40,26 @@ demo.app.Radar.prototype.getTypes = function() {
 	return keys;
 };
 
+demo.app.Radar.prototype.newMarker = function(type) {
+	var range = this.typeRanges[type];
+	var mag = (range[0] + ((range[1] - range[0]) / 2)) * 100;
+
+	var m = this.addMarker({
+		"title": "New",
+		"deg": this.graph.getDefaultPosition(),
+		"mag": mag,
+		"new": true,
+	});
+
+	this.activateMarker(m);
+	return this.current;
+};
+demo.app.Radar.prototype.deleteMarker = function(marker) {
+	var idx = this.markers.indexOf(marker);
+	if (idx > -1) {
+		this.markers.splice(idx, 1);
+	}
+};
 demo.app.Radar.prototype.addMarker = function(model) {
 	model.type = this.getTypeFromMagnitude(model.mag);
 	var m = {
