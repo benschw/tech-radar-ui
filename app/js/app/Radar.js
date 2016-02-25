@@ -44,7 +44,7 @@ demo.app.Radar.prototype.addMarker = function(model) {
 	model.type = this.getTypeFromMagnitude(model.mag);
 	this.markers.push({
 		"model": model,
-		"idx": this.markers.length,
+		"idx": this.markers.length+1,
 		"coord": this.graph.getCoordinates(model.deg, model.mag),
 		f: false,
 		h: false
@@ -53,27 +53,23 @@ demo.app.Radar.prototype.addMarker = function(model) {
 demo.app.Radar.prototype.updateLocation = function(idx, dx, dy) {
 	for(var i=0; i<this.markers.length; i++) {
 		if (this.markers[i].idx == idx) {
-
-			this.markers[i].coord.x += dx;
-			this.markers[i].coord.y += dy;
+			var c = this.markers[i].coord;
+			var r = this.graph.radius;
+			c.x += dx;
+			c.y += dy;
 			
-			var tmp = this.graph.getPolar(this.markers[i].coord.x, this.markers[i].coord.y);
-			this.markers[i].model.deg = tmp.deg;
-			this.markers[i].model.mag = tmp.mag;
-			this.markers[i].model.type = this.getTypeFromMagnitude(tmp.mag);
-		}
-	}
-};
+			c.x = Math.max(c.x, 0);
+			c.x = Math.min(c.x, r);
+			c.y = Math.max(c.y, 0);
+			c.y = Math.min(c.y, r);
 
-// private
+			var polar = this.graph.getPolar(c.x, c.y);
 
-demo.app.Radar.prototype.getTypeFromMagnitude = function(mag) {
-	mag = mag / 100;
-	var types = this.getTypes();
-	for (var i = 0; i < types.length; i++) {
-		var range = this.typeRanges[types[i]];
-		if (mag > range[0] && mag <= range[1]) {
-			return types[i];
+			this.markers[i].model.deg = polar.deg;
+			this.markers[i].model.mag = polar.mag;
+			this.markers[i].model.coord = this.graph.getCoordinates(polar.deg, polar.mag);
+			this.markers[i].model.type = this.getTypeFromMagnitude(polar.mag);
+			return;
 		}
 	}
 };
@@ -94,19 +90,31 @@ demo.app.Radar.prototype.exitHover = function(marker) {
 	}
 	this.hover = null;
 };
-demo.app.Radar.prototype.toggleMarker = function(el) {
+demo.app.Radar.prototype.deactivateMarkers = function() {
+	for(var i=0; i<this.markers.length; i++) {
+		this.markers[i].f = false;
+	}
+	this.current = null;
+};
+demo.app.Radar.prototype.activateMarker = function(el) {
 	for(var i=0; i<this.markers.length; i++) {
 
 		if (el === null || this.markers[i].idx !== el.idx) {
 			this.markers[i].f = false;
 		} else {
-			if (this.markers[i].f) {
-				this.markers[i].f = false;
-				this.current = null;
-			} else {
-				this.markers[i].f = true;
-				this.current = el;
-			}
+			this.markers[i].f = true;
+			this.current = el;
+		}
+	}
+};
+
+demo.app.Radar.prototype.getTypeFromMagnitude = function(mag) {
+	mag = mag / 100;
+	var types = this.getTypes();
+	for (var i = 0; i < types.length; i++) {
+		var range = this.typeRanges[types[i]];
+		if (mag > range[0] && mag <= range[1]) {
+			return types[i];
 		}
 	}
 };

@@ -27,13 +27,27 @@ demo.app.RadarCtrl = function($scope, $state) {
 		view: view
 	});
 
+	$scope.newMarker = function() {
+		var p = $scope.radar.graph.getDefaultPosition();
+		$scope.radar.addMarker({
+				"title": "New",
+				"deg": p.deg,
+				"mag": p.mag,
+				"new": true,
+		})
+	};
+	$scope.saveAll = function() {
+		console.log("saving...");
+	};
+
 	if (view == "tl") {
 		for(var i=0; i<50; i++) {
 			$scope.radar.addMarker({
 				"id": i,
 				"title": "tl item "+i,
-				"deg": Math.random() * 90 + 90,
-				"mag": Math.random() * 100
+				"deg": Math.round(Math.random() * 90 + 90),
+				"mag": Math.round(Math.random() * 100),
+				"new": Math.round(Math.random()) === 1,
 			});
 		}
 	}
@@ -42,8 +56,9 @@ demo.app.RadarCtrl = function($scope, $state) {
 			$scope.radar.addMarker({
 				"id": i,
 				"title": "tl item "+i,
-				"deg": Math.random() * 90,
-				"mag": Math.random() * 100
+				"deg": Math.round(Math.random() * 90),
+				"mag": Math.round(Math.random() * 100),
+				"new": Math.round(Math.random()) === 1,
 			});
 		}
 	}
@@ -52,8 +67,9 @@ demo.app.RadarCtrl = function($scope, $state) {
 			$scope.radar.addMarker({
 				"id": i,
 				"title": "tl item "+i,
-				"deg": Math.random() * 90 + 180,
-				"mag": Math.random() * 100
+				"deg": Math.round(Math.random() * 90 + 180),
+				"mag": Math.round(Math.random() * 100),
+				"new": Math.round(Math.random()) === 1,
 			});
 		}
 	}
@@ -62,8 +78,9 @@ demo.app.RadarCtrl = function($scope, $state) {
 			$scope.radar.addMarker({
 				"id": i,
 				"title": "tl item "+i,
-				"deg": Math.random() * 90 + 270,
-				"mag": Math.random() * 100
+				"deg": Math.round(Math.random() * 90 + 270),
+				"mag": Math.round(Math.random() * 100),
+				"new": Math.round(Math.random()) === 1,
 			});
 		}
 	}

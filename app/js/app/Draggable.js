@@ -51,8 +51,8 @@ demo.app.Draggable = function($document) {
 		function mouseup() {
 			scope.radar.updateLocation(attr.myDraggable, x, y)
 			x = 0;
-			y = 0
-			transform()
+			y = 0;
+			transform();
 			$document.off('mousemove', mousemove);
 			$document.off('mouseup', mouseup);
 		}

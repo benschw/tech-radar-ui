@@ -13,13 +13,14 @@
 				<div ng-repeat="item in radar.markers"
 						id="marker-{{item.idx}}-{{type}}"
 						class="list-group-item"
-						ng-click="radar.toggleMarker(item)"
+						ng-click="radar.activateMarker(item)"
 						ng-class="{focus:item.f, hover:item.h && !item.f}"
 						ng-mouseenter="radar.enterHover(item)"
 						ng-mouseleave="radar.exitHover(item)"
 						ng-hide="item.model.type != type"
 					>
-					{{item.model.title}}
+					<h5>{{item.idx}}. {{item.model.title}} <span ng-hide="!item.model.new" class="label label-default">New</span></h5>
+
 					<div ng-hide="item.idx !== radar.current.idx">
 						{{item.model.deg}} deg, {{item.model.mag}}<br />
 						{{item.coord.x}}, {{item.coord.y}}
@@ -36,7 +37,12 @@
 	<div class="panel-body affix nav"> 
 
 		<div id="quadrant-radar"> 
-			<svg ng-attr-height="{{radar.graph.h}}" ng-attr-width="{{radar.graph.w}}" class="radar-wrapper theme-{{radar.graph.view}}">
+			<svg class="radar-wrapper theme-{{radar.graph.view}}"
+					ng-attr-height="{{radar.graph.h}}"
+					ng-attr-width="{{radar.graph.w}}"
+					ng-click="radar.deactivateMarkers()"
+				>
+				
 			
 				<g class="graph-rings">
 					<line ng-repeat="axis in radar.graph.axes" class="ring-axis" ng-attr-x1="{{axis[0]}}" ng-attr-y1="{{axis[1]}}" ng-attr-x2="{{axis[2]}}" ng-attr-y2="{{axis[3]}}" />
@@ -46,7 +52,7 @@
 	
 				<g class="marker" ng-repeat="el in radar.markers" 
 						my-draggable="{{el.idx}}"
-						ng-click="radar.toggleMarker(el)"
+						ng-click="radar.activateMarker(el); $event.stopPropagation();"
 						ng-mouseenter="radar.enterHover(el)"
 						ng-mouseleave="radar.exitHover(el)"
 						scroll-on-click="{{el.idx}}-{{el.model.type}}"
@@ -54,7 +60,14 @@
 					<circle ng-attr-cx="{{el.coord.x}}" ng-attr-cy="{{el.coord.y}}" 
 							ng-attr-r="{{radar.markerRadius}}" 
 							ng-class="{focus:el.f, hover:el.h && !el.f}"
+							ng-hide="el.model.new"
 							></circle>
+					<rect ng-attr-x="{{el.coord.x}}" ng-attr-y="{{el.coord.y}}" 
+							ng-attr-width="{{radar.markerRadius*2}}" 
+							ng-attr-height="{{radar.markerRadius*2}}" 
+							ng-class="{focus:el.f, hover:el.h && !el.f}"
+							ng-hide="!el.model.new"
+							></rect>
 					<text class="number" text-anchor="middle" ng-attr-x="{{el.coord.x}}" ng-attr-y="{{el.coord.y}}" dx="0" dy="5">
 						{{el.idx}}
 					</text>
@@ -67,6 +80,8 @@
 						
 		<input type="checkbox" ng-model="editable" /><br />
 
+		<button class="btn" type="button" ng-click="newMarker()">New</button>
+		<button class="btn" type="button" ng-click="saveAll()">Save</button>
 	</div>
 </div>
 	

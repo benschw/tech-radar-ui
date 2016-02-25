@@ -95,54 +95,84 @@ demo.app.Graph.prototype.getRing = function(p) {
 };
 
 demo.app.Graph.prototype.getPolar = function(x, y) {
-	if (this.view === "tl") {
-		return {
-			"deg": null,
-			"mag": null
-		};
-	} else if (this.view === "tr") {
-		return {
-			"deg": null,
-			"mag": null
-		};
-	} else if (this.view === "bl") {
-		return {
-			"deg": null,
-			"mag": null
-		};
-	} else if (this.view === "br") {
-		return {
-			"deg": null,
-			"mag": null
-		};
-	}
+	var px = 0;
+	var py = 0;
 
+	if (this.view === "tl") {
+		px = (this.radius-x) * -1;
+		py = this.radius - y;
+	} else if (this.view === "tr") {
+		px = x;
+		py = this.radius - y;
+	} else if (this.view === "bl") {
+		px = (this.radius-x) * -1;
+		py = y * -1;
+	} else if (this.view === "br") {
+		px = x;
+		py = y * -1;
+	}
+	
+	console.log([x,y,Math.round(px),Math.round(py)]);
+
+	var rad = Math.atan2(py, px); // -PI..PI
+	var deg = rad * 180 / Math.PI; // radians to degrees
+	if (deg < 0) {
+		deg = 360 + deg; // 0..360
+	}
+	
+	var v = Math.sqrt(px*px + py*py); // get hypotenuse
+	var mag = v / this.radius * 100;  // scale to 1-100 range
+
+	return {
+		"deg": Math.round(deg),
+		"mag": Math.min(Math.round(mag), 100)
+	};
 };
 demo.app.Graph.prototype.getCoordinates = function(deg, mag) {
-	var rad = deg * (Math.PI / 180);
-		
-	var x = Math.abs(mag * Math.cos(rad)) / 100 * this.radius;
-	var y = Math.abs(mag * Math.sin(rad)) / 100 * this.radius;
+	var rad = deg * (Math.PI / 180); // degrees to radians
+
+	var magX = mag * Math.cos(rad);
+	var magY = mag * Math.sin(rad);
+	
+	var x = Math.round(Math.abs(magX) / 100 * this.radius);
+	var y = Math.round(Math.abs(magY) / 100 * this.radius);
+
 	if (this.view === "tl") {
 		return {
-			"x": Math.round(this.radius - x),
-			"y": Math.round(this.radius - y)
+			"x": this.radius - x,
+			"y": this.radius - y
 		};
 	} else if (this.view === "tr") {
 		return {
-			"x": Math.round(x),
-			"y": Math.round(this.radius - y)
+			"x": x,
+			"y": this.radius - y
 		};
 	} else if (this.view === "bl") {
 		return {
-			"x": Math.round(this.radius - x),
-			"y": Math.round(y)
+			"x": this.radius - x,
+			"y": y
 		};
 	} else if (this.view === "br") {
 		return {
-			"x": Math.round(x),
-			"y": Math.round(y)
+			"x": x,
+			"y": y
 		};
 	}
 };
-
+demo.app.Graph.prototype.getDefaultPosition = function() {
+	var mag = 75; // assess
+	var deg = 45;
+	if (this.view === "tl") {
+		deg += 90;
+	} else if (this.view === "tr") {
+		//pass
+	} else if (this.view === "bl") {
+		deg += 180;
+	} else if (this.view === "br") {
+		deg += 270;
+	}
+	return {
+		"mag": mag,
+		"deg": deg
+	};
+};
