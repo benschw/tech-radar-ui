@@ -29,22 +29,42 @@ demo.app.RadarCtrl = function($scope, $state) {
 
 	if (view == "tl") {
 		for(var i=0; i<50; i++) {
-			$scope.radar.addMarker(i, "tl item "+i, Math.random() * 90 + 90, Math.random() * 100);
+			$scope.radar.addMarker({
+				"id": i,
+				"title": "tl item "+i,
+				"deg": Math.random() * 90 + 90,
+				"mag": Math.random() * 100
+			});
 		}
 	}
 	if (view == "tr") {
 		for(var i=0; i<5; i++) {
-			$scope.radar.addMarker(i, "tr item "+i, Math.random() * 90, Math.random() * 100);
+			$scope.radar.addMarker({
+				"id": i,
+				"title": "tl item "+i,
+				"deg": Math.random() * 90,
+				"mag": Math.random() * 100
+			});
 		}
 	}
 	if (view == "bl") {
 		for(var i=0; i<5; i++) {
-			$scope.radar.addMarker(i, "tl item "+i, Math.random() * 90 + 180, Math.random() * 100);
+			$scope.radar.addMarker({
+				"id": i,
+				"title": "tl item "+i,
+				"deg": Math.random() * 90 + 180,
+				"mag": Math.random() * 100
+			});
 		}
 	}
 	if (view == "br") {
 		for(var i=0; i<5; i++) {
-			$scope.radar.addMarker(i, "tl item "+i, Math.random() * 90 + 270, Math.random() * 100);
+			$scope.radar.addMarker({
+				"id": i,
+				"title": "tl item "+i,
+				"deg": Math.random() * 90 + 270,
+				"mag": Math.random() * 100
+			});
 		}
 	}
 };

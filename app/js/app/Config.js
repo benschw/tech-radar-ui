@@ -64,12 +64,36 @@ demo.app.Config = function ($stateProvider, $urlRouterProvider) {
 		},
 		data: {view: "tr"}
 	};
+	var platforms = {
+		url: "/platforms",
+		'parent': layout,
+		views: {
+			'main@root': {
+				controller: 'demo.app.RadarCtrl',
+				templateUrl: 'app/tpl/radar.html'
+			}
+		},
+		data: {view: "bl"}
+	};
+	var languages = {
+		url: "/languages",
+		'parent': layout,
+		views: {
+			'main@root': {
+				controller: 'demo.app.RadarCtrl',
+				templateUrl: 'app/tpl/radar.html'
+			}
+		},
+		data: {view: "br"}
+	};
 	$stateProvider
 		.state('root', root)
 		.state('root.layout', layout)
 		.state('root.layout.home', home)
 		.state('root.layout.techniques', techniques)
-		.state('root.layout.tools', tools);
+		.state('root.layout.tools', tools)
+		.state('root.layout.platforms', platforms)
+		.state('root.layout.languages', languages);
 };
 
 
