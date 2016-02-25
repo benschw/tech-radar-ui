@@ -42,13 +42,15 @@ demo.app.Radar.prototype.getTypes = function() {
 
 demo.app.Radar.prototype.addMarker = function(model) {
 	model.type = this.getTypeFromMagnitude(model.mag);
-	this.markers.push({
+	var m = {
 		"model": model,
 		"idx": this.markers.length+1,
 		"coord": this.graph.getCoordinates(model.deg, model.mag),
 		f: false,
 		h: false
-	});
+	};
+	this.markers.push(m);
+	return m;
 };
 demo.app.Radar.prototype.updateLocation = function(idx, dx, dy) {
 	for(var i=0; i<this.markers.length; i++) {

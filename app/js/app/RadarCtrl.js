@@ -29,12 +29,14 @@ demo.app.RadarCtrl = function($scope, $state) {
 
 	$scope.newMarker = function() {
 		var p = $scope.radar.graph.getDefaultPosition();
-		$scope.radar.addMarker({
-				"title": "New",
-				"deg": p.deg,
-				"mag": p.mag,
-				"new": true,
-		})
+		var m = $scope.radar.addMarker({
+			"title": "New",
+			"deg": p.deg,
+			"mag": p.mag,
+			"new": true,
+		});
+
+		$scope.radar.activateMarker(m);
 	};
 	$scope.saveAll = function() {
 		console.log("saving...");
