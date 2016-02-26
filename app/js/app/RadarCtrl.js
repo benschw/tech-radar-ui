@@ -5,6 +5,7 @@
 goog.provide('demo.app.RadarCtrl');
 
 goog.require('demo.app.Radar');
+goog.require('demo.app.Marker')
 /**
  * Home controller
  * @param  {angular.Scope=} $scope
@@ -58,47 +59,49 @@ demo.app.RadarCtrl = function($scope, $state, $uibModal) {
 
 	if (view == "tl") {
 		for(var i=0; i<50; i++) {
-			$scope.radar.addMarker({
+			$scope.radar.addMarker(new demo.app.Marker($scope.radar.graph, {
 				"id": i,
 				"title": "tl item "+i,
 				"deg": Math.round(Math.random() * 90 + 90),
 				"mag": Math.round(Math.random() * 100),
 				"new": Math.round(Math.random()) === 1,
-			});
+			}));
 		}
 	}
 	if (view == "tr") {
 		for(var i=0; i<5; i++) {
-			$scope.radar.addMarker({
+			$scope.radar.addMarker(new demo.app.Marker($scope.radar.graph, {
 				"id": i,
 				"title": "tl item "+i,
 				"deg": Math.round(Math.random() * 90),
 				"mag": Math.round(Math.random() * 100),
 				"new": Math.round(Math.random()) === 1,
-			});
+			}));
 		}
 	}
 	if (view == "bl") {
 		for(var i=0; i<5; i++) {
-			$scope.radar.addMarker({
+			$scope.radar.addMarker(new demo.app.Marker($scope.radar.graph, {
 				"id": i,
 				"title": "tl item "+i,
 				"deg": Math.round(Math.random() * 90 + 180),
 				"mag": Math.round(Math.random() * 100),
 				"new": Math.round(Math.random()) === 1,
-			});
+			}));
 		}
 	}
 	if (view == "br") {
 		for(var i=0; i<5; i++) {
-			$scope.radar.addMarker({
+			$scope.radar.addMarker(new demo.app.Marker($scope.radar.graph, {
 				"id": i,
 				"title": "tl item "+i,
 				"deg": Math.round(Math.random() * 90 + 270),
 				"mag": Math.round(Math.random() * 100),
 				"new": Math.round(Math.random()) === 1,
-			});
+			}));
 		}
 	}
+	console.log($scope.radar.markers);
+
 };
 

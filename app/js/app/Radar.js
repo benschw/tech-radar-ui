@@ -5,51 +5,56 @@
 goog.provide('demo.app.Radar');
 
 goog.require('demo.app.Graph');
+goog.require('demo.app.MarkerTypes');
+goog.require('demo.app.Marker');
 
 /**
  * @constructor
  */
 demo.app.Radar = function(config) {
 
+	this.types = new demo.app.MarkerTypes({
+		adopt: {
+			title: "Adopt",
+			range: [0, 0.4]
+		},
+		trial: {
+			title: "Trial",
+			range: [0.4, 0.65]
+		},
+		assess: {
+			title: "Assess",
+			range: [0.65, 0.85]
+		},
+		hold: {
+			title: "Hold",
+			range: [0.85, 1]
+		}
+	});
+
+	this.hideLabels = config.hideLabels ? true : false;
+
 	this.markerRadius = config.markerRadius;
 	this.markers = [];
+	this.deletedMarkers = [];
 	
-	this.graph = new demo.app.Graph(config.radius, config.view);
-
-	for (var type in this.typeRanges) {
-		var range = this.typeRanges[type];
-		this.graph.addRing(range[1]);
-	}
+	this.graph = new demo.app.Graph(config.radius, config.view, this.types);
 
 	this.current = null;
 	this.hover = null;
 
-};
-demo.app.Radar.prototype.typeRanges = {
-	adopt:  [0,    0.4],
-	trial:  [0.4,  0.65],
-	assess: [0.65, 0.85],
-	hold:   [0.85, 1]
-};
 
-demo.app.Radar.prototype.getTypes = function() {
-	var keys = [];
-	for (var type in this.typeRanges) {
-		keys.push(type);
-	}
-	return keys;
 };
-
 demo.app.Radar.prototype.newMarker = function(type) {
-	var range = this.typeRanges[type];
+	var range = this.types.getTypeRange(type);
 	var mag = (range[0] + ((range[1] - range[0]) / 2)) * 100;
 
-	var m = this.addMarker({
+	var m = this.addMarker(new demo.app.Marker(this.graph,{
 		"title": "New",
 		"deg": this.graph.getDefaultPosition(),
 		"mag": mag,
 		"new": true,
-	});
+	}));
 
 	this.activateMarker(m);
 	return this.current;
@@ -59,20 +64,15 @@ demo.app.Radar.prototype.deleteMarker = function(marker) {
 	if (idx > -1) {
 		this.markers.splice(idx, 1);
 	}
+	this.deletedMarkers.push(marker);
 };
-demo.app.Radar.prototype.addMarker = function(model) {
-	model.type = this.getTypeFromMagnitude(model.mag);
-	var m = {
-		"model": model,
-		"idx": this.markers.length+1,
-		"coord": this.graph.getCoordinates(model.deg, model.mag),
-		f: false,
-		h: false
-	};
-	this.markers.push(m);
-	return m;
+demo.app.Radar.prototype.addMarker = function(marker) {
+	this.markers.push(marker);
+	marker.idx = this.markers.length;
+	return marker;
 };
 demo.app.Radar.prototype.updateLocation = function(idx, dx, dy) {
+	console.log(this.current);
 	for(var i=0; i<this.markers.length; i++) {
 		if (this.markers[i].idx == idx) {
 			var c = this.markers[i].coord;
@@ -90,54 +90,29 @@ demo.app.Radar.prototype.updateLocation = function(idx, dx, dy) {
 			this.markers[i].model.deg = polar.deg;
 			this.markers[i].model.mag = polar.mag;
 			this.markers[i].model.coord = this.graph.getCoordinates(polar.deg, polar.mag);
-			this.markers[i].model.type = this.getTypeFromMagnitude(polar.mag);
+			this.markers[i].model.type = this.types.getTypeFromMagnitude(polar.mag);
 			return;
 		}
 	}
 };
 
 demo.app.Radar.prototype.enterHover = function(marker) {
-	for(var i=0; i<this.markers.length; i++) {
-		if (this.markers[i].idx === marker.idx) {
-			this.markers[i].h = true;
-		}
-	}
+	marker.hover(true);
 	this.hover = marker;
 };
 demo.app.Radar.prototype.exitHover = function(marker) {
-	for(var i=0; i<this.markers.length; i++) {
-		if (this.markers[i].idx === marker.idx) {
-			this.markers[i].h = false;
-		}
-	}
+	marker.hover(false);
 	this.hover = null;
 };
 demo.app.Radar.prototype.deactivateMarkers = function() {
 	for(var i=0; i<this.markers.length; i++) {
-		this.markers[i].f = false;
+		this.markers[i].select(false);
 	}
 	this.current = null;
 };
-demo.app.Radar.prototype.activateMarker = function(el) {
-	for(var i=0; i<this.markers.length; i++) {
-
-		if (el === null || this.markers[i].idx !== el.idx) {
-			this.markers[i].f = false;
-		} else {
-			this.markers[i].f = true;
-			this.current = el;
-		}
-	}
-};
-
-demo.app.Radar.prototype.getTypeFromMagnitude = function(mag) {
-	mag = mag / 100;
-	var types = this.getTypes();
-	for (var i = 0; i < types.length; i++) {
-		var range = this.typeRanges[types[i]];
-		if (mag > range[0] && mag <= range[1]) {
-			return types[i];
-		}
-	}
+demo.app.Radar.prototype.activateMarker = function(marker) {
+	this.deactivateMarkers();
+	marker.select(true);
+	this.current = marker;
 };
 

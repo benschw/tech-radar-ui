@@ -13,9 +13,9 @@
 <div class="col-md-6">
 	<div class="panel-body">
 
-		<div class="panel panel-default" ng-repeat="type in radar.getTypes()">
+		<div class="panel panel-default" ng-repeat="type in radar.types.getTypes()">
 			<div class="panel-heading">
-				{{type}}
+				{{radar.types.getTypeTitle(type)}}
 				<button class="pull-right btn btn-default btn-xs" type="button" 
 						ng-click="openEditor(radar.newMarker(type))"
 						ng-hide="!editable"
@@ -40,7 +40,7 @@
 						</span>
 					</h5>
 
-					<div ng-hide="item.idx !== radar.current.idx">
+					<div ng-hide="item !== radar.current">
 
 						{{item.model.deg}} deg, {{item.model.mag}}<br />
 						{{item.coord.x}}, {{item.coord.y}}<br />
@@ -76,7 +76,16 @@
 					<path ng-repeat="ring in radar.graph.rings.arcs" class="ring-arc" ng-attr-d="{{ring}}" />
 					<path ng-repeat="ring in radar.graph.rings.fills" class="ring-fill" ng-attr-d="{{ring}}" />
 				</g>
-	
+
+				<text class="number" text-anchor="middle" 
+					ng-hide="radar.hideLabels"
+					ng-repeat="label in radar.graph.labels"
+					ng-attr-x="{{label.x}}" 
+					ng-attr-y="{{label.y}}" dx="0" dy="0">
+					{{label.title}}
+				</text>
+
+
 				<g class="marker" ng-repeat="el in radar.markers" 
 						my-draggable="{{el.idx}}"
 						ng-click="radar.activateMarker(el); $event.stopPropagation();"

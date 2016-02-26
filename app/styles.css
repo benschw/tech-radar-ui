@@ -2,7 +2,9 @@ html, body { height: 100%; width: 100%; margin: 0; }
 body {
 	padding-top: 40px;
 }
-
+.center-anchor {
+	transform: translate(-50%, -50%); /* anchor to center*/
+}
 .item-list .focus {
 	background-color: #e6f2ff;
 }
@@ -59,9 +61,6 @@ body {
 	stroke-width: 1;
 }
 .radar-wrapper .marker rect {
-	fill-opacity: .4;
-	stroke-opacity: .3;
-	stroke-width: 1;
 	transform: translate(-50%, -50%); /* anchor to center*/
 }
 .radar-wrapper .marker .focus {

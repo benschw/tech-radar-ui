@@ -5,17 +5,62 @@
 
 goog.provide('demo.app.Graph');
 
+goog.require('demo.app.MarkerTypes');
+
 /**
  * @constructor
  */
-demo.app.Graph = function(radius, view) {
+demo.app.Graph = function(radius, view, types) {
 	this.radius = radius;
 	this.view = view;
+	this.types = types
 
 	this.h = this.radius + 2;
 	this.w = this.radius + 2
 	this.rings = {arcs:[], fills:[]};
 	this.axes = this.getAxes();
+	
+	this.labels = this.getLabels();
+
+	var t = this.types.getTypes();
+	for (var i = 0; i<t.length; i++) {
+		var range = this.types.getTypeRange(t[i]);
+		this.addRing(range[1]);
+	}
+};
+
+demo.app.Graph.prototype.getLabels = function() {
+	var labels = [];
+	
+	var r = this.radius
+
+	var t = this.types.getTypes();
+	for (var i = 0; i<t.length; i++) {
+		var type = t[i];
+		var x = 0;
+		var y = 0;
+		var range = this.types.getTypeRange(type);
+		var cx = (range[0] + ((range[1] - range[0]) / 2)) * r;
+		if (this.view === "tl") {
+			x = r - cx;
+			y = r - 5;
+		} else if (this.view === "tr") {
+			x = cx;
+			y = r - 5;
+		} else if (this.view === "bl") {
+			y = 15;
+			x = r - cx;
+		} else if (this.view === "br") {
+			y = 15;
+			x = cx;
+		}
+		labels.push({
+			title: this.types.getTypeTitle(type),
+			"x": x,
+			"y": y
+		});
+	}
+	return labels;
 };
 
 demo.app.Graph.prototype.addRing = function(typeLimit) {
