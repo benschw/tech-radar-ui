@@ -64,15 +64,16 @@ demo.app.Radar.prototype.deleteMarker = function(marker) {
 	if (idx > -1) {
 		this.markers.splice(idx, 1);
 	}
+	this.reindex();
 	this.deletedMarkers.push(marker);
 };
 demo.app.Radar.prototype.addMarker = function(marker) {
 	this.markers.push(marker);
 	marker.idx = this.markers.length;
+	this.reindex();
 	return marker;
 };
 demo.app.Radar.prototype.updateLocation = function(idx, dx, dy) {
-	console.log(this.current);
 	for(var i=0; i<this.markers.length; i++) {
 		if (this.markers[i].idx == idx) {
 			var c = this.markers[i].coord;
@@ -91,6 +92,8 @@ demo.app.Radar.prototype.updateLocation = function(idx, dx, dy) {
 			this.markers[i].model.mag = polar.mag;
 			this.markers[i].model.coord = this.graph.getCoordinates(polar.deg, polar.mag);
 			this.markers[i].model.type = this.types.getTypeFromMagnitude(polar.mag);
+
+			this.reindex();
 			return;
 		}
 	}
@@ -116,3 +119,20 @@ demo.app.Radar.prototype.activateMarker = function(marker) {
 	this.current = marker;
 };
 
+// private
+
+demo.app.Radar.prototype.reindex = function() {
+	this.markers.sort(function(a, b) {
+		if (a.model.mag < b.model.mag) {
+			return -1;
+		} else if (a.model.mag > b.model.mag) {
+			return 1;
+		} else {
+			return 0;
+		}
+	});
+
+	for (var i=0; i<this.markers.length; i++) {
+		this.markers[i].idx = i+1;
+	}
+};

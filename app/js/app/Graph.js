@@ -157,7 +157,6 @@ demo.app.Graph.prototype.getPolar = function(x, y) {
 		py = y * -1;
 	}
 	
-	console.log([x,y,Math.round(px),Math.round(py)]);
 
 	var rad = Math.atan2(py, px); // -PI..PI
 	var deg = rad * 180 / Math.PI; // radians to degrees
