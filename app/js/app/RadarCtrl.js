@@ -101,7 +101,6 @@ demo.app.RadarCtrl = function($scope, $state, $uibModal) {
 			}));
 		}
 	}
-	console.log($scope.radar.markers);
 
 };
 

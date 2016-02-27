@@ -1,16 +1,8 @@
-<div class="page-header">
-	<span class="pull-right">
-		<div class="input-group">
-			<label uib-tooltip="Edit">Edit</label>
-			<input type="checkbox" ng-model="editable" />
-			<button class="btn" type="button" ng-click="saveAll()">Save</button>
-		</div>
-	</span>
-	<h1>{{message}}
-	</h1>
-</div>
-
 <div class="col-md-6">
+	<div class="page-header">
+		<h1>{{message}}</h1>
+	</div>
+
 	<div class="panel-body">
 
 		<div class="panel panel-default" ng-repeat="type in radar.types.getTypes()">
@@ -33,14 +25,12 @@
 						ng-mouseleave="radar.exitHover(item)"
 						ng-hide="item.model.type != type"
 					>
-					<h5>
 						{{item.idx}}. {{item.model.title}}
 						<span ng-hide="!item.model.new" class="badge">
 							New
 						</span>
-					</h5>
 
-					<div ng-hide="item !== radar.current">
+					<div class="list-group-item-body" ng-hide="item !== radar.current">
 
 						{{item.model.deg}} deg, {{item.model.mag}}<br />
 						{{item.coord.x}}, {{item.coord.y}}<br />
@@ -62,7 +52,6 @@
 <div class="col-md-6"> 
 
 	<div class="panel-body affix nav"> 
-
 		<div id="quadrant-radar"> 
 			<svg class="radar-wrapper theme-{{radar.graph.view}}"
 					ng-attr-height="{{radar.graph.h}}"
@@ -91,8 +80,8 @@
 						ng-click="radar.activateMarker(el); $event.stopPropagation();"
 						ng-mouseenter="radar.enterHover(el)"
 						ng-mouseleave="radar.exitHover(el)"
-						scroll-on-click="{{el.idx}}-{{el.model.type}}"
 					>
+						<!--scroll-on-click="{{el.idx}}-{{el.model.type}}"-->
 					<circle ng-attr-cx="{{el.coord.x}}" ng-attr-cy="{{el.coord.y}}" 
 							ng-attr-r="{{radar.markerRadius}}" 
 							ng-class="{focus:el.f, hover:el.h && !el.f}"
@@ -111,6 +100,12 @@
 				</g>
 			</svg>
 
+		</div>
+
+		<div class="input-group pull-right">
+			<label uib-tooltip="Edit">Edit</label>
+			<input type="checkbox" ng-model="editable" />
+			<button class="btn" type="button" ng-click="saveAll()">Save</button>
 		</div>
 	</div>
 </div>
