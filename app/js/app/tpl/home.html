@@ -1,41 +1,9 @@
 <div class="col-md-10"> 
 	<div class="page-header">
-		<h1>Home <small>{{message}}</small></h1>
+		<h1>{{message}}</h1>
 	</div>
 
 	<div class="panel-body"> 
-
-	<div id="combo-radar"> 
-		<svg ng-repeat="radar in graphs" ng-attr-height="{{radar.style.h}}" ng-attr-width="{{radar.style.w}}" class="radar-wrapper theme-{{radar.view}}">
-			
-			<g class="graph-rings">
-				<line ng-repeat="axis in radar.style.axes" class="ring-axis" ng-attr-x1="{{axis[0]}}" ng-attr-y1="{{axis[1]}}" ng-attr-x2="{{axis[2]}}" ng-attr-y2="{{axis[3]}}" />
-				<path ng-repeat="ring in radar.style.rings.arcs" class="ring-arc" ng-attr-d="{{ring}}" />
-				<path ng-repeat="ring in radar.style.rings.fills" class="ring-fill" ng-attr-d="{{ring}}" />
-			</g>
-
-			<g class="marker" ng-repeat="el in radar.markers" my-draggable ng-click="radar.selectItem(el)">
-				<circle ng-attr-cx="{{el.coord.dx}}" ng-attr-cy="{{el.coord.dy}}" ng-attr-r="{{radar.markerRadius}}" ng-class="{focus:!editable && el.f}"></circle>
-				<text text-anchor="middle" ng-attr-x="{{el.coord.dx}}" ng-attr-y="{{el.coord.dy}}" dx="0" dy="5">
-					{{el.id}}
-				</text>
-			</g>
-		</svg>
-
-	</div>
-	<label>Edit</label>
-	<input type="checkbox" ng-model="editable" /><br />
-
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h3 class="panel-title">{{graphs[0].current.title}}</h3>
-		</div>
-		<div class="panel-body">
-			<div ng-hide="graphs[0].current == null">
-				{{graphs[0].current.coord.dx}}, {{graphs[0].current.coord.dy}}
-			</div>
-		</div>
-	</div>
 
 	</div>
 </div>

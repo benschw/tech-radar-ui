@@ -5,10 +5,10 @@
 		</div>
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
-				<li ng-class="{active: $state.includes('root.layout.techniques')}"><a ui-sref="root.layout.techniques">Techniques</a></li>
-				<li ng-class="{active: $state.includes('root.layout.tools')}"><a ui-sref="root.layout.tools">Tools</a></li>
-				<li ng-class="{active: $state.includes('root.layout.platforms')}"><a ui-sref="root.layout.platforms">Platforms</a></li>
-				<li ng-class="{active: $state.includes('root.layout.languages')}"><a ui-sref="root.layout.languages">Languages</a></li>
+				<li ng-class="{active: $state.includes('root.layout.quadrant', {quadrant: 'techniques'})}"><a ui-sref="root.layout.quadrant({quadrant: 'techniques'})">Techniques</a></li>
+				<li ng-class="{active: $state.includes('root.layout.quadrant', {quadrant: 'tools'})}"><a ui-sref="root.layout.quadrant({quadrant: 'tools'})">Tools</a></li>
+				<li ng-class="{active: $state.includes('root.layout.quadrant', {quadrant: 'platforms'})}"><a ui-sref="root.layout.quadrant({quadrant: 'platforms'})">Platforms</a></li>
+				<li ng-class="{active: $state.includes('root.layout.quadrant', {quadrant: 'languages'})}"><a ui-sref="root.layout.quadrant({quadrant: 'languages'})">Languages</a></li>
 			</ul>
 		</div>
 	</div>

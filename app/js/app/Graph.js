@@ -21,12 +21,50 @@ demo.app.Graph = function(radius, view, types) {
 	this.axes = this.getAxes();
 	
 	this.labels = this.getLabels();
+	this.legend = this.getLegend();
+
 
 	var t = this.types.getTypes();
 	for (var i = 0; i<t.length; i++) {
 		var range = this.types.getTypeRange(t[i]);
 		this.addRing(range[1]);
 	}
+};
+
+demo.app.Graph.prototype.getLegend = function() {
+	var x = 0;
+	var y = 0;
+	var anchor;
+	var dx = 0;
+
+
+	if (this.view === "tl") {
+		x = 0;
+		y = 0;
+		dx = 15;
+		anchor = "start";
+	} else if (this.view === "tr") {
+		x = this.radius - 20;
+		y = 0;
+		dx = -15;
+		anchor = "end";
+	} else if (this.view === "bl") {
+		y = this.radius-45;
+		x = 0;
+		dx = 15;
+		anchor = "start";
+	} else if (this.view === "br") {
+		y = this.radius-45;
+		x = this.radius-20;
+		dx = -15;
+		anchor = "end";
+	}
+	return {
+		x: x,
+		y: y,
+		dx: dx,
+		anchor: anchor
+	};
 };
 
 demo.app.Graph.prototype.getLabels = function() {

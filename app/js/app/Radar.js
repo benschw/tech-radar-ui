@@ -42,9 +42,8 @@ demo.app.Radar = function(config) {
 
 	this.current = null;
 	this.hover = null;
-
-
 };
+
 demo.app.Radar.prototype.newMarker = function(type) {
 	var range = this.types.getTypeRange(type);
 	var mag = (range[0] + ((range[1] - range[0]) / 2)) * 100;

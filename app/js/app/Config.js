@@ -42,8 +42,8 @@ demo.app.Config = function ($stateProvider, $urlRouterProvider) {
 			}
 		}
 	};
-	var techniques = {
-		url: "/techniques",
+	var quadrant = {
+		url: "/:quadrant",
 		'parent': layout,
 		views: {
 			'main@root': {
@@ -51,49 +51,28 @@ demo.app.Config = function ($stateProvider, $urlRouterProvider) {
 				templateUrl: 'app/tpl/radar.html'
 			}
 		},
-		data: {view: "tl"}
+		resolve:{
+			quadrant: ['$stateParams', function($stateParams){
+				return $stateParams.quadrant;
+			}]
+		}
 	};
-	var tools = {
-		url: "/tools",
-		'parent': layout,
+	var details = {
+		url: "/:id",
+		'parent': quadrant,
 		views: {
 			'main@root': {
-				controller: 'demo.app.RadarCtrl',
-				templateUrl: 'app/tpl/radar.html'
+				controller: 'demo.app.DetailsCtrl',
+				templateUrl: 'app/tpl/details.html'
 			}
-		},
-		data: {view: "tr"}
-	};
-	var platforms = {
-		url: "/platforms",
-		'parent': layout,
-		views: {
-			'main@root': {
-				controller: 'demo.app.RadarCtrl',
-				templateUrl: 'app/tpl/radar.html'
-			}
-		},
-		data: {view: "bl"}
-	};
-	var languages = {
-		url: "/languages",
-		'parent': layout,
-		views: {
-			'main@root': {
-				controller: 'demo.app.RadarCtrl',
-				templateUrl: 'app/tpl/radar.html'
-			}
-		},
-		data: {view: "br"}
+		}
 	};
 	$stateProvider
 		.state('root', root)
 		.state('root.layout', layout)
 		.state('root.layout.home', home)
-		.state('root.layout.techniques', techniques)
-		.state('root.layout.tools', tools)
-		.state('root.layout.platforms', platforms)
-		.state('root.layout.languages', languages);
+		.state('root.layout.quadrant', quadrant)
+		.state('root.layout.quadrant.details', details);
 };
 
 
