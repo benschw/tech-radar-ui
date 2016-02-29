@@ -7,6 +7,7 @@ goog.provide('demo.app.RadarCtrl');
 goog.require('demo.app.Radar');
 goog.require('demo.app.Marker')
 goog.require('demo.app.Quadrants')
+goog.require('demo.app.DefaultMarkerTypes')
 /**
  * Home controller
  * @param  {angular.Scope=} $scope
@@ -16,9 +17,6 @@ goog.require('demo.app.Quadrants')
  * @ngInject
  */
 demo.app.RadarCtrl = function($scope, $state, $uibModal, $stateParams) {
-	var view;
-	var title;
-
 	var view  = demo.app.Quadrants.lookupSlug($stateParams.quadrant);
 	var title = demo.app.Quadrants.getTitle(view);
 
@@ -28,7 +26,8 @@ demo.app.RadarCtrl = function($scope, $state, $uibModal, $stateParams) {
 	$scope.radar = new demo.app.Radar({
 		radius: 350,
 		markerRadius: 10,
-		view: view
+		view: view,
+		types: demo.app.DefaultMarkerTypes()
 	});
 
 	$scope.openEditor = function(marker) {
