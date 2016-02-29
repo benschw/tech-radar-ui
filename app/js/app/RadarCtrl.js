@@ -6,6 +6,7 @@ goog.provide('demo.app.RadarCtrl');
 
 goog.require('demo.app.Radar');
 goog.require('demo.app.Marker')
+goog.require('demo.app.Quadrants')
 /**
  * Home controller
  * @param  {angular.Scope=} $scope
@@ -17,19 +18,9 @@ goog.require('demo.app.Marker')
 demo.app.RadarCtrl = function($scope, $state, $uibModal, $stateParams) {
 	var view;
 	var title;
-	if ($stateParams.quadrant == 'techniques') {
-		view = 'tl';
-		title = 'Techniques';
-	} else if ($stateParams.quadrant == 'tools') {
-		view = 'tr';
-		title = 'Tools';
-	} else if ($stateParams.quadrant == 'platforms') {
-		view = 'bl';
-		title = 'Platforms';
-	} else if ($stateParams.quadrant == 'languages') {
-		view = 'br';
-		title = 'Languages & Frameworks';
-	}
+
+	var view  = demo.app.Quadrants.lookupSlug($stateParams.quadrant);
+	var title = demo.app.Quadrants.getTitle(view);
 
 	$scope.quadrant = $stateParams.quadrant;
 	$scope.title = title;
