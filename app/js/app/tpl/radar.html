@@ -9,7 +9,9 @@
 			<div class="panel-heading">
 				{{radar.types.getTypeTitle(type)}}
 				
-				<span class="glyphicon glyphicon-question-sign" aria-hidden="true" uib-tooltip="Hello World"></span>
+				<span class="glyphicon glyphicon-question-sign" aria-hidden="true"
+					uib-tooltip="{{radar.types.getTypeDescription(type)}}"
+					tooltip-placement="right"></span>
 				<button class="pull-right btn btn-default btn-xs" type="button" 
 						ng-click="openEditor(radar.newMarker(type))"
 						ng-hide="!editable"

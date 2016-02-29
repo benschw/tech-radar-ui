@@ -23,6 +23,9 @@ demo.app.MarkerTypes.prototype.getTypes = function() {
 demo.app.MarkerTypes.prototype.getTypeTitle = function(type) {
 	return this.model[type].title;
 };
+demo.app.MarkerTypes.prototype.getTypeDescription = function(type) {
+	return this.model[type].description;
+};
 demo.app.MarkerTypes.prototype.getTypeRange = function(type) {
 	return this.model[type].range;
 };
