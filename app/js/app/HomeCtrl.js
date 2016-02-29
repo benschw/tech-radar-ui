@@ -4,7 +4,6 @@
  */
 goog.provide('demo.app.HomeCtrl');
 
-goog.require('demo.app.Radar');
 /**
  * Home controller
  * @param  {angular.Scope=} $scope

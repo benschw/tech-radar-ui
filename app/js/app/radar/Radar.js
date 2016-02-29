@@ -2,17 +2,17 @@
 /**
  * @fileoverview Master bootstrap file.
  */
-goog.provide('demo.app.Radar');
+goog.provide('demo.app.radar.Radar');
 
-goog.require('demo.app.Graph');
-goog.require('demo.app.MarkerTypes');
-goog.require('demo.app.Marker');
-goog.require('demo.app.Coordinates');
+goog.require('demo.app.radar.Graph');
+goog.require('demo.app.radar.MarkerTypes');
+goog.require('demo.app.radar.Marker');
+goog.require('demo.app.radar.Coordinates');
 
 /**
  * @constructor
  */
-demo.app.Radar = function(config) {
+demo.app.radar.Radar = function(config) {
 	this.types = config.types;
 
 	this.hideLabels = config.hideLabels ? true : false;
@@ -21,14 +21,14 @@ demo.app.Radar = function(config) {
 	this.markers = [];
 	this.deletedMarkers = [];
 	
-	this.graph = new demo.app.Graph(config.radius, config.view, this.types);
+	this.graph = new demo.app.radar.Graph(config.radius, config.view, this.types);
 
 	this.current = null;
 	this.hover = null;
 };
 
-demo.app.Radar.prototype.newMarker = function(type) {
-	var m = this.addMarker(new demo.app.Marker(this.graph,{
+demo.app.radar.Radar.prototype.newMarker = function(type) {
+	var m = this.addMarker(new demo.app.radar.Marker(this.graph,{
 		"title": "New",
 		"new": true,
 	}));
@@ -38,7 +38,7 @@ demo.app.Radar.prototype.newMarker = function(type) {
 	this.activateMarker(m);
 	return this.current;
 };
-demo.app.Radar.prototype.deleteMarker = function(marker) {
+demo.app.radar.Radar.prototype.deleteMarker = function(marker) {
 	var idx = this.markers.indexOf(marker);
 	if (idx > -1) {
 		this.markers.splice(idx, 1);
@@ -46,13 +46,13 @@ demo.app.Radar.prototype.deleteMarker = function(marker) {
 	this.reindex();
 	this.deletedMarkers.push(marker);
 };
-demo.app.Radar.prototype.addMarker = function(marker) {
+demo.app.radar.Radar.prototype.addMarker = function(marker) {
 	this.markers.push(marker);
 	marker.idx = this.markers.length;
 	this.reindex();
 	return marker;
 };
-demo.app.Radar.prototype.updateLocation = function(idx, dx, dy) {
+demo.app.radar.Radar.prototype.updateLocation = function(idx, dx, dy) {
 	for(var i=0; i<this.markers.length; i++) {
 		if (this.markers[i].idx == idx) {
 			var c = this.markers[i].coord;
@@ -68,21 +68,21 @@ demo.app.Radar.prototype.updateLocation = function(idx, dx, dy) {
 	}
 };
 
-demo.app.Radar.prototype.enterHover = function(marker) {
+demo.app.radar.Radar.prototype.enterHover = function(marker) {
 	marker.hover(true);
 	this.hover = marker;
 };
-demo.app.Radar.prototype.exitHover = function(marker) {
+demo.app.radar.Radar.prototype.exitHover = function(marker) {
 	marker.hover(false);
 	this.hover = null;
 };
 
-demo.app.Radar.prototype.activateMarker = function(marker) {
+demo.app.radar.Radar.prototype.activateMarker = function(marker) {
 	this.deactivateMarkers();
 	marker.select(true);
 	this.current = marker;
 };
-demo.app.Radar.prototype.deactivateMarkers = function() {
+demo.app.radar.Radar.prototype.deactivateMarkers = function() {
 	for(var i=0; i<this.markers.length; i++) {
 		this.markers[i].select(false);
 	}
@@ -91,7 +91,7 @@ demo.app.Radar.prototype.deactivateMarkers = function() {
 
 // private
 
-demo.app.Radar.prototype.reindex = function() {
+demo.app.radar.Radar.prototype.reindex = function() {
 	this.markers.sort(function(a, b) {
 		if (a.model.mag < b.model.mag) {
 			return -1;

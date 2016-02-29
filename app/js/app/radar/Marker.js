@@ -2,13 +2,13 @@
 /**
  * @fileoverview Master bootstrap file.
  */
-goog.provide('demo.app.Marker');
+goog.provide('demo.app.radar.Marker');
 
 
 /**
  * @constructor
  */
-demo.app.Marker = function(graph, model) {
+demo.app.radar.Marker = function(graph, model) {
 	this.graph = graph;
 	this.model = model;
 
@@ -19,18 +19,18 @@ demo.app.Marker = function(graph, model) {
 	this.h = false;
 };
 
-demo.app.Marker.prototype.coord = {};
+demo.app.radar.Marker.prototype.coord = {};
 
-demo.app.Marker.prototype.idx = "";
+demo.app.radar.Marker.prototype.idx = "";
 
-demo.app.Marker.prototype.select = function(enabled) {
+demo.app.radar.Marker.prototype.select = function(enabled) {
 	this.f = enabled;
 };
-demo.app.Marker.prototype.hover = function(enabled) {
+demo.app.radar.Marker.prototype.hover = function(enabled) {
 	this.h = enabled;
 };
 
-demo.app.Marker.prototype.setVector = function(v) {
+demo.app.radar.Marker.prototype.setVector = function(v) {
 	this.model.mag = v.mag;
 	this.model.deg = v.deg;
 

@@ -2,17 +2,17 @@
 /**
  * @fileoverview Master bootstrap file.
  */
-goog.provide('demo.app.MarkerTypes');
+goog.provide('demo.app.radar.MarkerTypes');
 
 
 /**
  * @constructor
  */
-demo.app.MarkerTypes = function(model) {
+demo.app.radar.MarkerTypes = function(model) {
 	this.model = model;
 };
 
-demo.app.MarkerTypes.prototype.getTypes = function() {
+demo.app.radar.MarkerTypes.prototype.getTypes = function() {
 	var keys = [];
 	for (var type in this.model) {
 		keys.push(type);
@@ -20,17 +20,17 @@ demo.app.MarkerTypes.prototype.getTypes = function() {
 	return keys;
 };
 
-demo.app.MarkerTypes.prototype.getTypeTitle = function(type) {
+demo.app.radar.MarkerTypes.prototype.getTypeTitle = function(type) {
 	return this.model[type].title;
 };
-demo.app.MarkerTypes.prototype.getTypeDescription = function(type) {
+demo.app.radar.MarkerTypes.prototype.getTypeDescription = function(type) {
 	return this.model[type].description;
 };
-demo.app.MarkerTypes.prototype.getTypeRange = function(type) {
+demo.app.radar.MarkerTypes.prototype.getTypeRange = function(type) {
 	return this.model[type].range;
 };
 
-demo.app.MarkerTypes.prototype.getTypeFromMagnitude = function(mag) {
+demo.app.radar.MarkerTypes.prototype.getTypeFromMagnitude = function(mag) {
 	mag = mag / 100;
 	var types = this.getTypes();
 

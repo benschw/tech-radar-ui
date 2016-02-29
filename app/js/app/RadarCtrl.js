@@ -4,10 +4,10 @@
  */
 goog.provide('demo.app.RadarCtrl');
 
-goog.require('demo.app.Radar');
-goog.require('demo.app.Marker')
-goog.require('demo.app.Quadrants')
-goog.require('demo.app.DefaultMarkerTypes')
+goog.require('demo.app.radar.Radar');
+goog.require('demo.app.radar.Marker')
+goog.require('demo.app.radar.Quadrants')
+goog.require('demo.app.radar.DefaultMarkerTypes')
 /**
  * Home controller
  * @param  {angular.Scope=} $scope
@@ -17,17 +17,17 @@ goog.require('demo.app.DefaultMarkerTypes')
  * @ngInject
  */
 demo.app.RadarCtrl = function($scope, $state, $uibModal, $stateParams) {
-	var view  = demo.app.Quadrants.lookupSlug($stateParams.quadrant);
-	var title = demo.app.Quadrants.getTitle(view);
+	var view  = demo.app.radar.Quadrants.lookupSlug($stateParams.quadrant);
+	var title = demo.app.radar.Quadrants.getTitle(view);
 
 	$scope.quadrant = $stateParams.quadrant;
 	$scope.title = title;
 	$scope.editable = true;
-	$scope.radar = new demo.app.Radar({
+	$scope.radar = new demo.app.radar.Radar({
 		radius: 350,
 		markerRadius: 10,
 		view: view,
-		types: demo.app.DefaultMarkerTypes()
+		types: demo.app.radar.DefaultMarkerTypes()
 	});
 
 	$scope.openEditor = function(marker) {
@@ -52,7 +52,7 @@ demo.app.RadarCtrl = function($scope, $state, $uibModal, $stateParams) {
 	};
 
 	var newMarker = function(i, mod) {
-		return new demo.app.Marker($scope.radar.graph, {
+		return new demo.app.radar.Marker($scope.radar.graph, {
 			"id": i+1,
 			"title": "New Item "+(i+1),
 			"deg": Math.round(Math.random() * 90 + mod),

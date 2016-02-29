@@ -2,7 +2,7 @@
 /**
  * @fileoverview Master bootstrap file.
  */
-goog.provide('demo.app.Coordinates');
+goog.provide('demo.app.radar.Coordinates');
 
 
 /**
@@ -10,13 +10,13 @@ goog.provide('demo.app.Coordinates');
  * @param{int} y
  * @constructor
  */
-demo.app.Coordinates = function(x, y) {
+demo.app.radar.Coordinates = function(x, y) {
 	this.x = x;
 	this.y = y;
 };
 
 
-demo.app.Coordinates.polarToSvg = function(polar, view, radius) {
+demo.app.radar.Coordinates.polarToSvg = function(polar, view, radius) {
 	var x = Math.round(Math.abs(polar.x) / 100 * radius);
 	var y = Math.round(Math.abs(polar.y) / 100 * radius);
 	
@@ -36,9 +36,9 @@ demo.app.Coordinates.polarToSvg = function(polar, view, radius) {
 		sx = x;
 		sy = y;
 	}
-	return new demo.app.Coordinates(sx, sy);
+	return new demo.app.radar.Coordinates(sx, sy);
 };
-demo.app.Coordinates.svgToPolar = function(coord, view, radius) {
+demo.app.radar.Coordinates.svgToPolar = function(coord, view, radius) {
 	var x = coord.x;
 	var y = coord.y;
 	var px = 0;
@@ -57,9 +57,9 @@ demo.app.Coordinates.svgToPolar = function(coord, view, radius) {
 		px = x;
 		py = y * -1;
 	}
-	return new demo.app.Coordinates(px, py);
+	return new demo.app.radar.Coordinates(px, py);
 };
-demo.app.Coordinates.polarToVector = function(coord, radius) {
+demo.app.radar.Coordinates.polarToVector = function(coord, radius) {
 	var px = coord.x;
 	var py = coord.y;
 
@@ -77,20 +77,20 @@ demo.app.Coordinates.polarToVector = function(coord, radius) {
 		"mag": Math.min(Math.round(mag), 100)
 	};
 };
-demo.app.Coordinates.vectorToPolar = function(v) {
+demo.app.radar.Coordinates.vectorToPolar = function(v) {
 	var rad = v.deg * (Math.PI / 180); // degrees to radians
 
 	var magX = v.mag * Math.cos(rad);
 	var magY = v.mag * Math.sin(rad);
 
-	return new demo.app.Coordinates(magX, magY);
+	return new demo.app.radar.Coordinates(magX, magY);
 };
 
-demo.app.Coordinates.vectorToSvg = function(v, view, radius) {
-	var polarCoord = demo.app.Coordinates.vectorToPolar(v);
-	return demo.app.Coordinates.polarToSvg(polarCoord, view, radius);
+demo.app.radar.Coordinates.vectorToSvg = function(v, view, radius) {
+	var polarCoord = demo.app.radar.Coordinates.vectorToPolar(v);
+	return demo.app.radar.Coordinates.polarToSvg(polarCoord, view, radius);
 };
-demo.app.Coordinates.svgToVector = function(c, view, radius) {
-	var polarCoord = demo.app.Coordinates.svgToPolar({x: c.x, y: c.y}, view, radius);
-	return demo.app.Coordinates.polarToVector(polarCoord, radius);
+demo.app.radar.Coordinates.svgToVector = function(c, view, radius) {
+	var polarCoord = demo.app.radar.Coordinates.svgToPolar({x: c.x, y: c.y}, view, radius);
+	return demo.app.radar.Coordinates.polarToVector(polarCoord, radius);
 };

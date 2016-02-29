@@ -14,8 +14,8 @@ goog.provide('demo.app.DetailsCtrl');
  * @ngInject
  */
 demo.app.DetailsCtrl = function($scope, $state, $stateParams, quadrant) {
-	var view  = demo.app.Quadrants.lookupSlug($stateParams.quadrant);
-	var title = demo.app.Quadrants.getTitle(view);
+	var view  = demo.app.radar.Quadrants.lookupSlug($stateParams.quadrant);
+	var title = demo.app.radar.Quadrants.getTitle(view);
 
 	$scope.quadrant = {
 		slug: quadrant,

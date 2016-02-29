@@ -2,13 +2,13 @@
 /**
  * @fileoverview Master bootstrap file.
  */
-goog.provide('demo.app.DefaultMarkerTypes');
+goog.provide('demo.app.radar.DefaultMarkerTypes');
 
-goog.require('demo.app.MarkerTypes');
+goog.require('demo.app.radar.MarkerTypes');
 
-demo.app.DefaultMarkerTypes = function() {
+demo.app.radar.DefaultMarkerTypes = function() {
 
-	return new demo.app.MarkerTypes({
+	return new demo.app.radar.MarkerTypes({
 		adopt: {
 			title: "Adopt",
 			description: "The Adopt Ring represents blips that we think you should be using now. We don't say that you should use these for every project; any tool should only be used in an appropriate context. However we do think that a blip in the adopt ring represents something where there is no doubt that it's proven and mature for use.",

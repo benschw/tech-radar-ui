@@ -3,15 +3,15 @@
  * @fileoverview Master bootstrap file.
  */
 
-goog.provide('demo.app.Graph');
+goog.provide('demo.app.radar.Graph');
 
-goog.require('demo.app.MarkerTypes');
-goog.require('demo.app.Coordinates');
+goog.require('demo.app.radar.MarkerTypes');
+goog.require('demo.app.radar.Coordinates');
 
 /**
  * @constructor
  */
-demo.app.Graph = function(radius, view, types) {
+demo.app.radar.Graph = function(radius, view, types) {
 	this.radius = radius;
 	this.view = view;
 	this.types = types
@@ -32,15 +32,15 @@ demo.app.Graph = function(radius, view, types) {
 	}
 };
 
-demo.app.Graph.prototype.vectorToSvg = function(v) {
-	return demo.app.Coordinates.vectorToSvg(v, this.view, this.radius);
+demo.app.radar.Graph.prototype.vectorToSvg = function(v) {
+	return demo.app.radar.Coordinates.vectorToSvg(v, this.view, this.radius);
 };
 
-demo.app.Graph.prototype.svgToVector = function(c) {
-	return demo.app.Coordinates.svgToVector(c, this.view, this.radius);
+demo.app.radar.Graph.prototype.svgToVector = function(c) {
+	return demo.app.radar.Coordinates.svgToVector(c, this.view, this.radius);
 };
 
-demo.app.Graph.prototype.getDefaultVector = function(type) {
+demo.app.radar.Graph.prototype.getDefaultVector = function(type) {
 	var range = this.types.getTypeRange(type);
 	var range = this.types.getTypeRange(type);
 	var mag = (range[0] + ((range[1] - range[0]) / 2)) * 100;
@@ -61,7 +61,7 @@ demo.app.Graph.prototype.getDefaultVector = function(type) {
 	};
 };
 
-demo.app.Graph.prototype.getLegend = function() {
+demo.app.radar.Graph.prototype.getLegend = function() {
 	var x = 0;
 	var y = 0;
 	var anchor;
@@ -97,7 +97,7 @@ demo.app.Graph.prototype.getLegend = function() {
 	};
 };
 
-demo.app.Graph.prototype.getLabels = function() {
+demo.app.radar.Graph.prototype.getLabels = function() {
 	var labels = [];
 	
 	var r = this.radius
@@ -131,7 +131,7 @@ demo.app.Graph.prototype.getLabels = function() {
 	return labels;
 };
 
-demo.app.Graph.prototype.getAxes = function() {
+demo.app.radar.Graph.prototype.getAxes = function() {
 	var r = this.radius;
 	if (this.view === "tl") {
 		return [
@@ -156,14 +156,14 @@ demo.app.Graph.prototype.getAxes = function() {
 	}
 };
 
-demo.app.Graph.prototype.addRing = function(typeLimit) {
+demo.app.radar.Graph.prototype.addRing = function(typeLimit) {
 	var tmp = this.getRing(typeLimit);
 
 	this.rings.arcs = this.rings.arcs.concat(tmp.arcs);
 	this.rings.fills = this.rings.fills.concat(tmp.fills);
 };
 
-demo.app.Graph.prototype.getRing = function(p) {
+demo.app.radar.Graph.prototype.getRing = function(p) {
 	var fmtArc = function(ring, inny) {
 		return "M "+ring[0]+","+ring[1]+" A "+ring[4]+","+ring[4]+" 0 0,"+inny+" "+ring[2]+","+ring[3]
 	};
