@@ -12,7 +12,8 @@ goog.provide('demo.app.Draggable');
  * @ngInject
  */
 demo.app.Draggable = function($document) {
-	return function(scope, element, attr) {
+	return function(scope, element, $attr) {
+		console.log([$document, scope, element, $attr]);
 		var startX = 0;
 		var startY = 0;
 		var x = 0;
@@ -39,7 +40,7 @@ demo.app.Draggable = function($document) {
 			y = event.pageY - startY;
 			x = event.pageX - startX;
 
-			transform()
+			transform();
 		}
 		function transform() {
 			element.css({
@@ -49,7 +50,7 @@ demo.app.Draggable = function($document) {
 			element.css('transform');
 		}
 		function mouseup() {
-			scope.radar.updateLocation(attr.myDraggable, x, y)
+			scope.radar.updateLocation($attr.myDraggable, x, y);
 			x = 0;
 			y = 0;
 			transform();

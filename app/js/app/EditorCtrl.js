@@ -6,15 +6,14 @@ goog.provide('demo.app.EditorCtrl');
 
 /**
  * Home controller
- * @param  {angular.Scope=} $scope
- * @param {*=} $scope
- * @param {*=} $uibModalInstance
- * @param {*=} radar
- * @param {*=} marker
+ * @param {angular.Scope} $scope
+ * @param {*} $uibModalInstance
+ * @param {demo.app.radar.Radar} radar
+ * @param {demo.app.radar.Marker} marker
  * @constructor
  * @ngInject
  */
-demo.app.EditorCtrl = function($scope, $state, $uibModalInstance, radar, marker) {
+demo.app.EditorCtrl = function($scope, $uibModalInstance, radar, marker) {
 	
 	$scope.marker = marker;
 

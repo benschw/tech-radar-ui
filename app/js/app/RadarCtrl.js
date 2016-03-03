@@ -5,14 +5,15 @@
 goog.provide('demo.app.RadarCtrl');
 
 goog.require('demo.app.radar.Radar');
-goog.require('demo.app.radar.Marker')
-goog.require('demo.app.radar.Quadrants')
-goog.require('demo.app.radar.DefaultMarkerTypes')
+goog.require('demo.app.radar.Marker');
+goog.require('demo.app.radar.Quadrants');
+goog.require('demo.app.radar.DefaultMarkerTypes');
 /**
  * Home controller
  * @param  {angular.Scope=} $scope
- * @param {*=} $scope
+ * @param {*=} $state
  * @param {*=} $uibModal
+ * @param {*=} $stateParams
  * @constructor
  * @ngInject
  */
@@ -20,9 +21,21 @@ demo.app.RadarCtrl = function($scope, $state, $uibModal, $stateParams) {
 	var view  = demo.app.radar.Quadrants.lookupSlug($stateParams.quadrant);
 	var title = demo.app.radar.Quadrants.getTitle(view);
 
+	/**
+	 * @export
+	 */
 	$scope.quadrant = $stateParams.quadrant;
+	/**
+	 * @export
+	 */
 	$scope.title = title;
+	/**
+	 * @export
+	 */
 	$scope.editable = true;
+	/**
+	 * @export
+	 */
 	$scope.radar = new demo.app.radar.Radar({
 		radius: 350,
 		markerRadius: 10,
@@ -30,8 +43,11 @@ demo.app.RadarCtrl = function($scope, $state, $uibModal, $stateParams) {
 		types: demo.app.radar.DefaultMarkerTypes()
 	});
 
+	/**
+	 * @export
+	 */
 	$scope.openEditor = function(marker) {
-		var modalInstance = $uibModal.open({
+		$uibModal.open({
 			animation: true,
 			templateUrl: 'app/tpl/editor.html',
 			controller: 'demo.app.EditorCtrl',
@@ -47,6 +63,9 @@ demo.app.RadarCtrl = function($scope, $state, $uibModal, $stateParams) {
 		});
 	};
 
+	/**
+	 * @export
+	 */
 	$scope.saveAll = function() {
 		console.log("saving...");
 	};
@@ -60,27 +79,27 @@ demo.app.RadarCtrl = function($scope, $state, $uibModal, $stateParams) {
 			"new": Math.round(Math.random()) === 1,
 		});
 	};
-
-	if (view == "tl") {
-		for(var i=0; i<40; i++) {
+	var i;
+	if (view === "tl") {
+		for(i=0; i<40; i++) {
 			$scope.radar.addMarker(newMarker(i, 90));
 		}
 	}
-	if (view == "tr") {
-		for(var i=0; i<5; i++) {
+	if (view === "tr") {
+		for(i=0; i<5; i++) {
 			$scope.radar.addMarker(newMarker(i, 0));
 		}
 	}
-	if (view == "bl") {
-		for(var i=0; i<5; i++) {
+	if (view === "bl") {
+		for(i=0; i<5; i++) {
 			$scope.radar.addMarker(newMarker(i, 180));
 		}
 	}
-	if (view == "br") {
-		for(var i=0; i<5; i++) {
+	if (view === "br") {
+		for(i=0; i<5; i++) {
 			$scope.radar.addMarker(newMarker(i, 270));
 		}
 	}
-
+	console.log($scope.radar);
 };
 

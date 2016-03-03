@@ -7,7 +7,6 @@ goog.provide('demo.app.ModuleRun');
 
 goog.require('cache.tpl');
 goog.require('demo.app.Draggable');
-goog.require('demo.app.ScrollOnClick');
 goog.require('demo.app.Config');
 goog.require('demo.app.HomeCtrl');
 goog.require('demo.app.RadarCtrl');
@@ -27,7 +26,7 @@ demo.app.ModuleRun = function ($rootScope, $state, $stateParams) {
 	$rootScope.$stateParams = $stateParams;
 };
 
-/*
+/**
  * @type {angular.Module} 
  */
 demo.app.module = angular.module('demo.app', [
@@ -42,6 +41,5 @@ demo.app.module = angular.module('demo.app', [
 	.controller('demo.app.RadarCtrl', demo.app.RadarCtrl)
 	.controller('demo.app.EditorCtrl', demo.app.EditorCtrl)
 	.controller('demo.app.DetailsCtrl', demo.app.DetailsCtrl)
-	.directive('myDraggable', demo.app.Draggable)
-	.directive('scrollOnClick', demo.app.ScrollOnClick);
+	.directive('myDraggable', demo.app.Draggable);
 

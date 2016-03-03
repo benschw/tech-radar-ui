@@ -6,6 +6,9 @@ goog.provide('demo.app.radar.DefaultMarkerTypes');
 
 goog.require('demo.app.radar.MarkerTypes');
 
+/**
+ * @return {demo.app.radar.MarkerTypes}
+ */
 demo.app.radar.DefaultMarkerTypes = function() {
 
 	return new demo.app.radar.MarkerTypes({
