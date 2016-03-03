@@ -1,61 +1,84 @@
 'use strict';
-/**
- * @fileoverview Master bootstrap file.
- */
+
+goog.provide('demo.app.DraggableFactory');
 goog.provide('demo.app.Draggable');
 
 
 /**
  * Draggable Directive
- * @param  {*=} $document (not defined in externs)
+ * @param  {Document} $document (not defined in externs)
  * @constructor
  * @ngInject
  */
+demo.app.DraggableFactory = function($document) {
+	return new demo.app.Draggable($document);
+};
+/**
+ * Draggable Directive
+ * @param  {Document} $document (not defined in externs)
+ * @constructor
+ */
 demo.app.Draggable = function($document) {
-	return function(scope, element, $attr) {
-		console.log([$document, scope, element, $attr]);
-		var startX = 0;
-		var startY = 0;
-		var x = 0;
-		var y = 0;
+	this.msg = "hello";
+	/**
+	 * @export
+	 */
+	this.doc = $document;
+	console.log([this.msg, this.doc]);
+};
 
-		element.css({
-			position: 'absolute',
-			cursor: 'pointer'
-		});
+/**
+ * @param {angular.Scope} scope
+ * @param {angular.JQLite} element
+ * @param {angular.Attributes} attr
+ * @export
+ */
+demo.app.Draggable.prototype.link = function(scope, element, attr) {
+	console.log([this.msg, this.doc, element]);
+	var startX = 0;
+	var startY = 0;
+	var x = 0;
+	var y = 0;
 
-		element.on('mousedown', function(event) {
-			if (!scope.editable) {
-				return;
-			}
-			// Prevent default dragging of selected content
-			event.preventDefault();
-			startX = event.pageX - x;
-			startY = event.pageY - y;
-			$document.on('mousemove', mousemove);
-			$document.on('mouseup', mouseup);
-		});
+	element.css({
+		position: 'absolute',
+		cursor: 'pointer'
+	});
 
-		function mousemove(event) {
-			y = event.pageY - startY;
-			x = event.pageX - startX;
-
-			transform();
+	element.on('mousedown', function(event) {
+		if (!scope.editable) {
+			return;
 		}
-		function transform() {
-			element.css({
-				transform: 'translate('+x+'px,'+y+'px)',
-				WebkitTransform: 'translate('+x+'px,'+y+'px)'
-			});
-			element.css('transform');
-		}
-		function mouseup() {
-			scope.radar.updateLocation($attr.myDraggable, x, y);
-			x = 0;
-			y = 0;
-			transform();
-			$document.off('mousemove', mousemove);
-			$document.off('mouseup', mouseup);
-		}
+		// Prevent default dragging of selected content
+		event.preventDefault();
+		startX = event.pageX - x;
+		startY = event.pageY - y;
+		element.on('mousemove', mousemove);
+		element.on('mouseup', mouseup);
+	});
+
+	var mousemove = function(event) {
+		y = event.pageY - startY;
+		x = event.pageX - startX;
+
+		transform();
 	};
+	var transform = function() {
+		element.css({
+			transform: 'translate('+x+'px,'+y+'px)',
+			WebkitTransform: 'translate('+x+'px,'+y+'px)'
+		});
+		element.css('transform');
+	};
+	var mouseup = function() {
+		var idx = attr.myDraggable ? attr.myDraggable : null;
+		console.log(idx, x, y);
+		scope.radar.updateLocation(idx, x, y);
+		x = 0;
+		y = 0;
+		transform();
+		element.off('mousemove', mousemove);
+		element.off('mouseup', mouseup);
+	};
+	
 };
