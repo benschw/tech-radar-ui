@@ -30,14 +30,3 @@ demo.app.RadarWidgetDirective.prototype.controller = demo.app.RadarWidgetCtrl;
  */
 demo.app.RadarWidgetDirective.prototype.templateUrl = 'app/tpl/radar-widget.html';
 
-/**
- * @param {angular.Scope} scope
- * @param {angular.JQLite} element
- * @param {angular.Attributes} attr
- * @export
- */
-demo.app.RadarWidgetDirective.prototype.link = function(scope, element, attr) {
-	scope.host = attr['host'];
-	scope.quadrant = attr['radar-widget'];
-};
-
