@@ -100,6 +100,11 @@ demo.app.RadarCtrl = function($scope, $state, $uibModal, $stateParams) {
 			$scope.radar.addMarker(newMarker(i, 270));
 		}
 	}
-	console.log($scope.radar);
+	console.log([
+		$scope.radar,
+		$scope.radar.types.getTypes(),
+		
+	]);
+
 };
 

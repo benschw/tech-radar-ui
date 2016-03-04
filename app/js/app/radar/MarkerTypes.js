@@ -12,6 +12,9 @@ demo.app.radar.MarkerTypes = function(model) {
 	this.model = model;
 };
 
+/**
+ * @export
+ */
 demo.app.radar.MarkerTypes.prototype.getTypes = function() {
 	var keys = [];
 	for (var type in this.model) {
@@ -20,16 +23,28 @@ demo.app.radar.MarkerTypes.prototype.getTypes = function() {
 	return keys;
 };
 
+/**
+ * @export
+ */
 demo.app.radar.MarkerTypes.prototype.getTypeTitle = function(type) {
-	return this.model[type].title;
+	return this.model[type]['title'];
 };
+/**
+ * @export
+ */
 demo.app.radar.MarkerTypes.prototype.getTypeDescription = function(type) {
-	return this.model[type].description;
+	return this.model[type]['description'];
 };
+/**
+ * @export
+ */
 demo.app.radar.MarkerTypes.prototype.getTypeRange = function(type) {
-	return this.model[type].range;
+	return this.model[type]['range'];
 };
 
+/**
+ * @export
+ */
 demo.app.radar.MarkerTypes.prototype.getTypeFromMagnitude = function(mag) {
 	mag = mag / 100;
 	var types = this.getTypes();
