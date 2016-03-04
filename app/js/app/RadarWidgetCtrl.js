@@ -8,15 +8,16 @@ goog.require('demo.app.radar.Quadrants');
 goog.require('demo.app.radar.DefaultMarkerTypes');
 /**
  * @param  {angular.Scope=} $scope
+ * @param {angular.Attributes} $attrs
  * @param {*=} $uibModal
  * @constructor
  * @ngInject
  */
-demo.app.RadarWidgetCtrl = function($scope, $uibModal) {
-	var view  = demo.app.radar.Quadrants.lookupSlug($scope.quadrant);
+demo.app.RadarWidgetCtrl = function($scope, $attrs, $uibModal) {
+	var view  = demo.app.radar.Quadrants.lookupSlug($attrs['quadrant']);
 	var title = demo.app.radar.Quadrants.getTitle(view);
 
-	console.log([$scope, view, title]);
+	console.log([$scope, $attrs, view, title]);
 	/**
 	 * @export
 	 */
@@ -66,6 +67,9 @@ demo.app.RadarWidgetCtrl = function($scope, $uibModal) {
 		console.log("saving...");
 	};
 
+	//
+	// FIXTURE DATA
+	//
 	var newMarker = function(i, mod) {
 		return new demo.app.radar.Marker($scope.radar.graph, {
 			"id": i+1,
@@ -75,6 +79,7 @@ demo.app.RadarWidgetCtrl = function($scope, $uibModal) {
 			"new": Math.round(Math.random()) === 1,
 		});
 	};
+
 	var i;
 	if (view === "tl") {
 		for(i=0; i<40; i++) {
