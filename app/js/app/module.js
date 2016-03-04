@@ -41,5 +41,5 @@ demo.app.module = angular.module('demo.app', [
 	.controller('demo.app.RadarCtrl', demo.app.RadarCtrl)
 	.controller('demo.app.EditorCtrl', demo.app.EditorCtrl)
 	.controller('demo.app.DetailsCtrl', demo.app.DetailsCtrl)
-	.directive('myDraggable', ['$document', demo.app.DraggableFactory]);
+	.directive('myDraggable', demo.app.DraggableFactory);
 
