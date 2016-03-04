@@ -34,6 +34,9 @@ demo.app.Draggable = function($document) {
  * @export
  */
 demo.app.Draggable.prototype.link = function(scope, element, attr) {
+
+	var d = element
+
 	console.log([this.msg, this.doc, element]);
 	var startX = 0;
 	var startY = 0;
@@ -53,8 +56,8 @@ demo.app.Draggable.prototype.link = function(scope, element, attr) {
 		event.preventDefault();
 		startX = event.pageX - x;
 		startY = event.pageY - y;
-		element.on('mousemove', mousemove);
-		element.on('mouseup', mouseup);
+		d.on('mousemove', mousemove);
+		d.on('mouseup', mouseup);
 	});
 
 	var mousemove = function(event) {
@@ -71,14 +74,12 @@ demo.app.Draggable.prototype.link = function(scope, element, attr) {
 		element.css('transform');
 	};
 	var mouseup = function() {
-		var idx = attr.myDraggable ? attr.myDraggable : null;
-		console.log(idx, x, y);
-		scope.radar.updateLocation(idx, x, y);
+		scope.radar.updateLocation(attr['myDraggable'], x, y);
 		x = 0;
 		y = 0;
 		transform();
-		element.off('mousemove', mousemove);
-		element.off('mouseup', mouseup);
+		d.off('mousemove', mousemove);
+		d.off('mouseup', mouseup);
 	};
 	
 };
