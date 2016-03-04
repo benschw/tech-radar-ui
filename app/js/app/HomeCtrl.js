@@ -6,7 +6,7 @@ goog.provide('demo.app.HomeCtrl');
 
 /**
  * Home controller
- * @param  {angular.Scope=} $scope
+ * @param {angular.Scope} $scope
  * @constructor
  * @ngInject
  */

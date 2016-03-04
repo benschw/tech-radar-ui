@@ -9,19 +9,40 @@ goog.require('demo.app.radar.MarkerTypes');
 goog.require('demo.app.radar.Coordinates');
 
 /**
+ * @param {number} radius
+ * @param {string} view
+ * @param {demo.app.radar.MarkerTypes} types
  * @constructor
  */
 demo.app.radar.Graph = function(radius, view, types) {
 	this.radius = radius;
 	this.view = view;
-	this.types = types
+	this.types = types;
 
+	/**
+	 * @export
+	 */
 	this.h = this.radius + 2;
-	this.w = this.radius + 2
-	this.rings = {arcs:[], fills:[]};
+	/**
+	 * @export
+	 */
+	this.w = this.radius + 2;
+	/**
+	 * @export
+	 */
+	this.rings = {'arcs':[], 'fills':[]};
+	/**
+	 * @export
+	 */
 	this.axes = this.getAxes();
 	
+	/**
+	 * @export
+	 */
 	this.labels = this.getLabels();
+	/**
+	 * @export
+	 */
 	this.legend = this.getLegend();
 
 
@@ -32,16 +53,59 @@ demo.app.radar.Graph = function(radius, view, types) {
 	}
 };
 
+/**
+ * @type {number}
+ * @export
+ */
+demo.app.radar.Graph.prototype.h = 0;
+/**
+ * @type {number}
+ * @export
+ */
+demo.app.radar.Graph.prototype.w = 0;
+/**
+ * @type {*}
+ * @export
+ */
+demo.app.radar.Graph.prototype.rings = {};
+/**
+ * @type {Array<*>}
+ * @export
+ */
+demo.app.radar.Graph.prototype.axes = [];
+/**
+ * @type {Array<*>}
+ * @export
+ */
+demo.app.radar.Graph.prototype.labels = [];
+/**
+ * @type {*}
+ * @export
+ */
+demo.app.radar.Graph.prototype.legend = [];
+
+
+/**
+ * @param {*} v
+ * @return {demo.app.radar.Coordinates}
+ */
 demo.app.radar.Graph.prototype.vectorToSvg = function(v) {
 	return demo.app.radar.Coordinates.vectorToSvg(v, this.view, this.radius);
 };
 
+/**
+ * @param {demo.app.radar.Coordinates} c
+ * @return {*}
+ */
 demo.app.radar.Graph.prototype.svgToVector = function(c) {
 	return demo.app.radar.Coordinates.svgToVector(c, this.view, this.radius);
 };
 
+/**
+ * @param {string} type
+ * @return {*}
+ */
 demo.app.radar.Graph.prototype.getDefaultVector = function(type) {
-	var range = this.types.getTypeRange(type);
 	var range = this.types.getTypeRange(type);
 	var mag = (range[0] + ((range[1] - range[0]) / 2)) * 100;
 
@@ -56,11 +120,14 @@ demo.app.radar.Graph.prototype.getDefaultVector = function(type) {
 		deg += 270;
 	}
 	return {
-		mag: mag,
-		deg: deg
+		'mag': mag,
+		'deg': deg
 	};
 };
 
+/**
+ * @return {*}
+ */
 demo.app.radar.Graph.prototype.getLegend = function() {
 	var x = 0;
 	var y = 0;
@@ -90,17 +157,17 @@ demo.app.radar.Graph.prototype.getLegend = function() {
 		anchor = "end";
 	}
 	return {
-		x: x,
-		y: y,
-		dx: dx,
-		anchor: anchor
+		'x': x,
+		'y': y,
+		'dx': dx,
+		'anchor': anchor
 	};
 };
 
 demo.app.radar.Graph.prototype.getLabels = function() {
 	var labels = [];
 	
-	var r = this.radius
+	var r = this.radius;
 
 	var t = this.types.getTypes();
 	for (var i = 0; i<t.length; i++) {
@@ -123,9 +190,9 @@ demo.app.radar.Graph.prototype.getLabels = function() {
 			x = cx;
 		}
 		labels.push({
-			title: this.types.getTypeTitle(type),
-			"x": x,
-			"y": y
+			'title': this.types.getTypeTitle(type),
+			'x': x,
+			'y': y
 		});
 	}
 	return labels;
@@ -159,13 +226,13 @@ demo.app.radar.Graph.prototype.getAxes = function() {
 demo.app.radar.Graph.prototype.addRing = function(typeLimit) {
 	var tmp = this.getRing(typeLimit);
 
-	this.rings.arcs = this.rings.arcs.concat(tmp.arcs);
-	this.rings.fills = this.rings.fills.concat(tmp.fills);
+	this.rings['arcs'] = this.rings['arcs'].concat(tmp['arcs']);
+	this.rings['fills'] = this.rings['fills'].concat(tmp['fills']);
 };
 
 demo.app.radar.Graph.prototype.getRing = function(p) {
 	var fmtArc = function(ring, inny) {
-		return "M "+ring[0]+","+ring[1]+" A "+ring[4]+","+ring[4]+" 0 0,"+inny+" "+ring[2]+","+ring[3]
+		return "M "+ring[0]+","+ring[1]+" A "+ring[4]+","+ring[4]+" 0 0,"+inny+" "+ring[2]+","+ring[3];
 	};
 
 	var fmtFill = function(ring, inny, x, y) {
@@ -174,32 +241,32 @@ demo.app.radar.Graph.prototype.getRing = function(p) {
 	};
 
 	var r = this.radius * p;
-	var d = r * 2;
 	var offset = this.radius - r;
+	var c = [];
 	if (this.view === "tl") {
 
-		var c = [offset+1, offset+r+2, offset+r+2, offset+1, r];
+		c = [offset+1, offset+r+2, offset+r+2, offset+1, r];
 		return {
 			"arcs": [fmtArc(c, 1)],
 			"fills": [fmtFill(c, 1, this.radius+2, this.radius+2)]
 		};
 	} else if (this.view === "tr") {
 
-		var c = [0, offset+1, r+1, this.radius+2, r];
+		c = [0, offset+1, r+1, this.radius+2, r];
 		return {
 			"arcs": [fmtArc(c, 1)],
 			"fills": [fmtFill(c, 1, 0, this.radius+2)]
 		};
 	} else if (this.view === "bl") {
 
-		var c = [offset+1, 0, this.radius+2, r+1, r];
+		c = [offset+1, 0, this.radius+2, r+1, r];
 		return {
 			"arcs": [fmtArc(c, 0)],
 			"fills": [fmtFill(c, 0, this.radius+2, 0)]
 		};
 	} else if (this.view === "br") {
 
-		var c = [0, r+1, r+1, 0, r];
+		c = [0, r+1, r+1, 0, r];
 		return {
 			"arcs": [fmtArc(c, 0)],
 			"fills": [fmtFill(c, 0, 0, 0)]

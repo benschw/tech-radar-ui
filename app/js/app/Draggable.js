@@ -1,18 +1,25 @@
 'use strict';
-/**
- * @fileoverview Master bootstrap file.
- */
-goog.provide('demo.app.Draggable');
+
+goog.provide('demo.app.DraggableFactory');
 
 
 /**
- * Draggable Directive
- * @param  {*=} $document (not defined in externs)
- * @constructor
+ * Draggable Directive Factory
+ * @param  {angular.JQLite} $document (not defined in externs)
  * @ngInject
  */
-demo.app.Draggable = function($document) {
-	return function(scope, element, attr) {
+demo.app.DraggableFactory = function($document) {
+
+	/**
+	 * Draggable Directive
+	 * @param {angular.Scope} scope
+	 * @param {angular.JQLite} element
+	 * @param {angular.Attributes} attr
+	 */
+	var draggable = function(scope, element, attr) {
+
+		var d = $document;
+
 		var startX = 0;
 		var startY = 0;
 		var x = 0;
@@ -31,30 +38,31 @@ demo.app.Draggable = function($document) {
 			event.preventDefault();
 			startX = event.pageX - x;
 			startY = event.pageY - y;
-			$document.on('mousemove', mousemove);
-			$document.on('mouseup', mouseup);
+			d.on('mousemove', mousemove);
+			d.on('mouseup', mouseup);
 		});
 
-		function mousemove(event) {
+		var mousemove = function(event) {
 			y = event.pageY - startY;
 			x = event.pageX - startX;
 
-			transform()
-		}
-		function transform() {
+			transform();
+		};
+		var transform = function() {
 			element.css({
 				transform: 'translate('+x+'px,'+y+'px)',
 				WebkitTransform: 'translate('+x+'px,'+y+'px)'
 			});
 			element.css('transform');
-		}
-		function mouseup() {
-			scope.radar.updateLocation(attr.myDraggable, x, y)
+		};
+		var mouseup = function() {
+			scope.radar.updateLocation(attr['myDraggable'], x, y);
 			x = 0;
 			y = 0;
 			transform();
-			$document.off('mousemove', mousemove);
-			$document.off('mouseup', mouseup);
-		}
+			d.off('mousemove', mousemove);
+			d.off('mouseup', mouseup);
+		};
 	};
+	return draggable;
 };

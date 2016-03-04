@@ -201,7 +201,7 @@ module.exports = function (grunt) {
     useminPrepare: {
       html: 'build/index.html',
       options: {
-        root: './bower_components',
+        root: ['./bower_components', './app'],
         dest: 'build',
         assetsDirs: ['bower_components']
       }
@@ -254,6 +254,12 @@ module.exports = function (grunt) {
           dest: 'dist/vendor.js',
         }]
       },
+      css: {
+        files: [{
+          src: 'build/style.css',
+          dest: 'dist/style.css',
+        }]
+      },
       jsdebug: {
         files: [{
           src: 'build/source-map.js.map',
@@ -294,6 +300,7 @@ module.exports = function (grunt) {
     'concat:generated',
     'uglify:generated',
     'usemin',
+	'cssmin',
     'copy:htmldist'
   ]);
 
@@ -306,6 +313,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'build-common',
 	'copy:js',
+	'copy:css',
   ]);
 
   grunt.registerTask('deps', [

@@ -6,10 +6,10 @@ goog.provide('demo.app.DetailsCtrl');
 
 /**
  * Home controller
- * @param  {angular.Scope=} $scope
- * @param {*=} $scope
- * @param {*=} $stateParams
- * @param {*=} quadrant
+ * @param {angular.Scope} $scope
+ * @param {*} $state
+ * @param {*} $stateParams
+ * @param {string} quadrant
  * @constructor
  * @ngInject
  */
@@ -17,9 +17,13 @@ demo.app.DetailsCtrl = function($scope, $state, $stateParams, quadrant) {
 	var view  = demo.app.radar.Quadrants.lookupSlug($stateParams.quadrant);
 	var title = demo.app.radar.Quadrants.getTitle(view);
 
+	/**
+	 * @type {*}
+	 * @export
+	 */
 	$scope.quadrant = {
-		slug: quadrant,
-		title: title
+		"slug": quadrant,
+		"title": title
 	};
 
 	var newMarker = function(id, mod) {
@@ -32,6 +36,10 @@ demo.app.DetailsCtrl = function($scope, $state, $stateParams, quadrant) {
 		};
 	};
 
+	/**
+	 * @type {demo.app.radar.Marker}
+	 * @export
+	 */
 	$scope.marker = newMarker($stateParams.id, 0);
 
 };

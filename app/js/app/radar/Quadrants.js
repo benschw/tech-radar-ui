@@ -10,6 +10,7 @@ demo.app.radar.Quadrants.view = {
 	BL: 'bl',
 	BR: 'br'
 };
+
 /**
  * @enum {string}
  */
@@ -20,6 +21,9 @@ demo.app.radar.Quadrants.slug = {
 	'languages'  : 'br'
 };
 
+/**
+ * @enum {string}
+ */
 demo.app.radar.Quadrants.titles = {
 	'tl': "Techniques",
 	'tr': "Tools",
@@ -27,9 +31,18 @@ demo.app.radar.Quadrants.titles = {
 	'br': "Languages & Frameworks"
 };
 
+/**
+ * @param {string} slug
+ * @return {string}
+ */
 demo.app.radar.Quadrants.lookupSlug = function(slug) {
 	return demo.app.radar.Quadrants.slug[slug];
 };
+
+/**
+ * @param {string} view
+ * @return {string}
+ */
 demo.app.radar.Quadrants.getTitle = function(view) {
 	return demo.app.radar.Quadrants.titles[view];
 };
