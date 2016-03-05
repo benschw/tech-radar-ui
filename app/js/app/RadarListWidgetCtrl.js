@@ -1,6 +1,6 @@
 'use strict';
 
-goog.provide('demo.app.RadarWidgetCtrl');
+goog.provide('demo.app.RadarListWidgetCtrl');
 
 goog.require('demo.app.radar.Radar');
 goog.require('demo.app.radar.Marker');
@@ -17,7 +17,7 @@ goog.require('demo.app.RadarService');
  * @constructor
  * @ngInject
  */
-demo.app.RadarWidgetCtrl = function($scope, $attrs, radarService, $uibModal) {
+demo.app.RadarListWidgetCtrl = function($scope, $attrs, radarService, $uibModal) {
 	var view  = demo.app.radar.Quadrants.lookupSlug($attrs['quadrant']);
 	var title = demo.app.radar.Quadrants.getTitle(view);
 
@@ -66,20 +66,7 @@ demo.app.RadarWidgetCtrl = function($scope, $attrs, radarService, $uibModal) {
 		});
 	};
 
-	/**
-	 * @type {function()}
-	 * @export
-	 */
-	$scope.saveAll = function() {
-		console.log("saving...");
-	};
-
-	console.log([
-		$scope.radar,
-		$scope.radar.types.getTypes(),
-		
-	]);
-
 };
+
 
 

@@ -1,7 +1,5 @@
 'use strict';
-/**
- * @fileoverview Controller for Home page
- */
+
 goog.provide('demo.app.EditorCtrl');
 
 /**
@@ -15,12 +13,25 @@ goog.provide('demo.app.EditorCtrl');
  */
 demo.app.EditorCtrl = function($scope, $uibModalInstance, radar, marker) {
 	
+	/**
+	 * @type {demo.app.radar.Marker}
+	 * @export
+	 */
 	$scope.marker = marker;
 
-	$scope.ok = function () {
+	/**
+	 * @type {function()}
+	 * @export
+	 */
+	$scope.ok = function() {
 		$uibModalInstance.close(null);
 	};
-	$scope.delete = function () {
+
+	/**
+	 * @type {function()}
+	 * @export
+	 */
+	$scope.delete = function() {
 		radar.deleteMarker(marker);
 		$uibModalInstance.close(null);
 	};

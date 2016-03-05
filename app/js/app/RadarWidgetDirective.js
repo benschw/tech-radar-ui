@@ -6,7 +6,6 @@ goog.provide('demo.app.RadarWidgetDirective');
 goog.require('demo.app.RadarWidgetCtrl');
 
 /**
- * Draggable Directive Factory
  * @ngInject
  */
 demo.app.RadarWidgetDirectiveFactory = function() {
