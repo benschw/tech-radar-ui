@@ -23,8 +23,12 @@ demo.app.RadarServiceFactory = function($http) {
  */
 demo.app.RadarService = function($http) {
 	this.http = $http;
-
 };
+
+/**
+ * @type {string}
+ */
+demo.app.RadarService.prototype.host = '';
 
 /**
  * @type {Object<string, demo.app.radar.Radar>}}
@@ -44,48 +48,85 @@ demo.app.RadarService.prototype.getRadar = function(view) {
 		});
 		this.refreshRadar(view);
 	}
-	console.log([this.radars, view]);
 
 	return this.radars[view];
+};
+
+/**
+ * @param {string} id
+ */
+demo.app.RadarService.prototype.getModel = function(id) {
+	var url = this.host + '/api/marker/' + id;
+	
+	return this.http.get(url);
 };
 
 /**
  * @param {string} view
  */
 demo.app.RadarService.prototype.refreshRadar = function(view) {
-	//
-	// FIXTURE DATA
-	//
-	var newMarker = function(graph, i, mod) {
-		return new demo.app.radar.Marker(graph, {
-			"id": i+1,
-			"title": "New Item "+(i+1),
-			"deg": Math.round(Math.random() * 90 + mod),
-			"mag": Math.round(Math.random() * 100),
-			"new": Math.round(Math.random()) === 1,
+	var url = this.host + '/api/marker?view=' + view;
+
+	var that = this;
+	this.http.get(url)
+		.success(function(data) {
+			for (var i = 0; i < data.length; i++) {
+				that.radars[view].addMarker(
+					new demo.app.radar.Marker(that.radars[view].graph, data[i])
+				);
+			}
 		});
-	};
+};
 
-	var i;
-	if (view === "tl") {
-		for(i=0; i<40; i++) {
-			this.radars[view].addMarker(newMarker(this.radars[view].graph, i, 90));
+/**
+ * @param {demo.app.radar.Radar} radar
+ */
+demo.app.RadarService.prototype.saveRadar = function(radar) {
+	for (var i = 0; i < radar.markers.length; i++) {
+		console.log(radar.markers[i].model);
+		if (radar.markers[i].model['id'] === null) {
+			this.addMarker(radar.markers[i]);
+		} else {
+			this.saveMarker(radar.markers[i]);
 		}
 	}
-	if (view === "tr") {
-		for(i=0; i<5; i++) {
-			this.radars[view].addMarker(newMarker(this.radars[view].graph, i, 0));
+	for (i = 0; i < radar.deletedMarkers.length; i++) {
+		if (radar.deletedMarkers[i].model['id'] !== null) {
+			this.deleteMarker(radar.deletedMarkers[i]);
 		}
 	}
-	if (view === "bl") {
-		for(i=0; i<5; i++) {
-			this.radars[view].addMarker(newMarker(this.radars[view].graph, i, 180));
-		}
-	}
-	if (view === "br") {
-		for(i=0; i<5; i++) {
-			this.radars[view].addMarker(newMarker(this.radars[view].graph, i, 270));
-		}
-	}
+};
 
+/**
+ * @param {demo.app.radar.Marker} marker
+ */
+demo.app.RadarService.prototype.saveMarker = function(marker) {
+	this.saveModel(marker.model);
+};
+
+/**
+ * @param {*} model
+ */
+demo.app.RadarService.prototype.saveModel = function(model) {
+	var url = this.host + '/api/marker/' + model['id'];
+
+	this.http.put(url, model);
+};
+
+/**
+ * @param {demo.app.radar.Marker} marker
+ */
+demo.app.RadarService.prototype.addMarker = function(marker) {
+	var url = this.host + '/api/marker';
+
+	this.http.post(url, marker.model);
+};
+
+/**
+ * @param {demo.app.radar.Marker} marker
+ */
+demo.app.RadarService.prototype.deleteMarker = function(marker) {
+	var url = this.host + '/api/marker/' + marker.model['id'];
+
+	this.http.delete(url);
 };

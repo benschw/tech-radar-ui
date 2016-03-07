@@ -99,6 +99,7 @@ demo.app.radar.Radar.prototype.hover = null;
  */
 demo.app.radar.Radar.prototype.newMarker = function(type) {
 	var m = this.addMarker(new demo.app.radar.Marker(this.graph,{
+		'id': null,
 		"title": "New",
 		"new": true,
 	}));

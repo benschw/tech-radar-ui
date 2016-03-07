@@ -6,60 +6,38 @@ goog.provide('demo.app.DetailsWidgetCtrl');
 
 /**
  * @param {angular.Scope} $scope
+ * @param {angular.Attributes} $attrs
+ * @param {demo.app.ParamService} paramService
+ * @param {demo.app.RadarService} radarService
  * @constructor
  * @ngInject
  */
-demo.app.DetailsWidgetCtrl = function($scope) {
-	var parse = function(val) {
-		var result = "Not found",
-		tmp = [];
-		location.search
-			.substr(1) // skip "?"
-			.split("&")
-			.forEach(function (item) {
-				tmp = item.split("=");
-				if (tmp[0] === val) {
-					result = decodeURIComponent(tmp[1]);
-				}
-			});
-		return result;
-	};
+demo.app.DetailsWidgetCtrl = function($scope, $attrs, paramService, radarService) {
+	var id = paramService.parseParam('id');
+	radarService.host = $attrs['host'];
 
-	var id = parse('id');
-//	var id = $stateParamas.id;
-//	var view  = demo.app.radar.Quadrants.lookupSlug($stateParams.quadrant);
-//	var title = demo.app.radar.Quadrants.getTitle(view);
+	/**
+	 * @type {boolean}
+	 * @export
+	 */
+	$scope.editable = false;
 
 	/**
 	 * @type {*}
 	 * @export
 	 */
-	$scope.quadrant = {
-		"slug": "foo",//quadrant,
-		"title": "Foo"//title
-	};
-
-
-	//
-	// FIXTURE DATA
-	//
-
-	var newMarker = function(id, mod) {
-		return {
-			"id": id,
-			"title": "New Item "+id,
-			"deg": Math.round(Math.random() * 90 + mod),
-			"mag": Math.round(Math.random() * 100),
-			"new": Math.round(Math.random()) === 1,
-		};
-	};
+	$scope.marker = {};
+	radarService.getModel(id).then(function(response) {
+		$scope.model = response.data;
+	});
 
 	/**
-	 * @type {demo.app.radar.Marker}
+	 * @type {function()}
 	 * @export
 	 */
-	$scope.marker = newMarker(id, 0);
-
+	$scope.save = function() {
+		radarService.saveModel($scope.model);
+	};
 };
 
 

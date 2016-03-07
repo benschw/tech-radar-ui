@@ -3,7 +3,7 @@
 goog.provide('demo.app.RadarListWidgetDirectiveFactory');
 goog.provide('demo.app.RadarListWidgetDirective');
 
-goog.require('demo.app.RadarListWidgetCtrl');
+goog.require('demo.app.RadarWidgetCtrl');
 
 /**
  * @ngInject
@@ -22,7 +22,7 @@ demo.app.RadarListWidgetDirective = function() {
 /**
  * @export
  */
-demo.app.RadarListWidgetDirective.prototype.controller = demo.app.RadarListWidgetCtrl;
+demo.app.RadarListWidgetDirective.prototype.controller = demo.app.RadarWidgetCtrl;
 
 /**
  * @export

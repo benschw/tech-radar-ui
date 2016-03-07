@@ -10,7 +10,7 @@ goog.require('demo.app.RadarService');
 
 
 /**
- * @param  {angular.Scope=} $scope
+ * @param {angular.Scope} $scope
  * @param {angular.Attributes} $attrs
  * @param {demo.app.RadarService} radarService
  * @param {*} $uibModal
@@ -19,25 +19,13 @@ goog.require('demo.app.RadarService');
  */
 demo.app.RadarWidgetCtrl = function($scope, $attrs, radarService, $uibModal) {
 	var view  = demo.app.radar.Quadrants.lookupSlug($attrs['quadrant']);
-	var title = demo.app.radar.Quadrants.getTitle(view);
+	radarService.host = $attrs['host'];
 
-	/**
-	 * @type {string}
-	 * @export
-	 */
-	$scope.quadrant = $scope.quadrant;
-
-	/**
-	 * @type {string}
-	 * @export
-	 */
-	$scope.title = title;
-	
 	/**
 	 * @type {boolean}
 	 * @export
 	 */
-	$scope.editable = true;
+	$scope.editable = false;
 	
 	/**
 	 * @type {demo.app.radar.Radar}
@@ -70,15 +58,9 @@ demo.app.RadarWidgetCtrl = function($scope, $attrs, radarService, $uibModal) {
 	 * @type {function()}
 	 * @export
 	 */
-	$scope.saveAll = function() {
-		console.log("saving...");
+	$scope.save = function() {
+		radarService.saveRadar($scope.radar);
 	};
-
-	console.log([
-		$scope.radar,
-		$scope.radar.types.getTypes(),
-		
-	]);
 
 };
 

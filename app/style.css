@@ -20,21 +20,11 @@ body {
 	border-top: 1px solid #ccc;
 	padding: 10px;
 }
-#combo-radar {
-	width: 484px;
-	height: 484px;
-}
 #quadrant-radar {
 	width: 352px;
 	height: 352px;
 	margin-top: 20px;
 	margin-bottom: 10px;
-}
-.radar-wrapper {
-	float: left;
-	display: block;
-	fill-opacity: .4;
-	stroke-opacity: .3;
 }
 
 .theme-tr {

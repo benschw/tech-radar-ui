@@ -1,11 +1,14 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
+	"math/rand"
 	"net/http"
+	"os"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 func GetJavascript(res http.ResponseWriter, req *http.Request) {
@@ -25,72 +28,32 @@ func GetCss(res http.ResponseWriter, req *http.Request) {
 	res.Write(data)
 }
 
-type Widget struct {
-	Id      int    `json:"id"`
-	Message string `json:"message"`
-}
-
-type WidgetResource struct {
-	widgets []*Widget
-}
-
-func (w *WidgetResource) addWidget(res http.ResponseWriter, req *http.Request) {
-	widget := &Widget{}
-
-	decoder := json.NewDecoder(req.Body)
-	if err := decoder.Decode(widget); err != nil {
-		panic(err)
-	}
-	b, err := json.Marshal(widget)
-	if err != nil {
-		panic(err)
-	}
-	body := string(b[:])
-
-	widget.Id = len(w.widgets) + 1
-	w.widgets = append(w.widgets, widget)
-
-	res.Header().Set("Content-Type", "application/json")
-	res.WriteHeader(http.StatusCreated)
-	fmt.Fprint(res, body)
-
-}
-func (w *WidgetResource) findAllWidgets(res http.ResponseWriter, req *http.Request) {
-	callback := req.FormValue("callback")
-	b, err := json.Marshal(w.widgets)
-	if err != nil {
-		res.Header().Set("Content-Type", "application/json")
-		res.WriteHeader(http.StatusOK)
-		fmt.Fprint(res, err)
-		return
-	}
-	body := string(b[:])
-
-	res.Header().Set("Content-Type", "application/json")
-	res.WriteHeader(http.StatusOK)
-	fmt.Fprintf(res, "%s(%s)", callback, body)
-}
-func (w *WidgetResource) deleteWidget(res http.ResponseWriter, req *http.Request) {
-}
-
 func main() {
-
-	resource := &WidgetResource{[]*Widget{
-		&Widget{Id: 1, Message: "Hello World"},
-		&Widget{Id: 2, Message: "Hello Solar System"},
-		&Widget{Id: 3, Message: "Hello Galaxy"},
-	}}
+	m := []*Marker{}
+	for i := 0; i < 5; i++ {
+		m = append(m, &Marker{Id: i, Title: fmt.Sprintf("New %d", i), Deg: rand.Intn(90), Mag: rand.Intn(100)})
+	}
+	resource := &MarkerResource{&MarkerRepo{m}}
 
 	r := mux.NewRouter()
 
-	r.HandleFunc("/api/widget", resource.addWidget).Methods("POST")
-	r.HandleFunc("/api/widget", resource.findAllWidgets).Methods("GET")
-	r.HandleFunc("/api/widget/{id}", resource.deleteWidget).Methods("DELETE")
+	r.HandleFunc("/api/marker", resource.addMarker).Methods("POST")
+	r.HandleFunc("/api/marker", resource.findAllMarkers).Methods("GET")
+	r.HandleFunc("/api/marker/{id}", resource.getMarker).Methods("GET")
+	r.HandleFunc("/api/marker/{id}", resource.saveMarker).Methods("PUT")
+	r.HandleFunc("/api/marker/{id}", resource.deleteMarker).Methods("DELETE")
 
 	r.HandleFunc("/assets/app.js", GetJavascript).Methods("GET")
 	r.HandleFunc("/assets/style.css", GetCss).Methods("GET")
 
 	http.Handle("/", r)
 
-	http.ListenAndServe(":8000", nil)
+	serveMux := http.NewServeMux()
+	serveMux.Handle("/", r)
+	handler := cors.New(cors.Options{
+		AllowedMethods: []string{"GET", "POST", "DELETE", "PUT"},
+	}).Handler(serveMux)
+
+	loggedRouter := handlers.LoggingHandler(os.Stdout, handler)
+	http.ListenAndServe(":8000", loggedRouter)
 }

@@ -1,4 +1,38 @@
-<h1>{{marker.title}}</h1>
+<div class="input-group pull-right">
+	<button type="button" class="btn" ng-model="editable" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
+		Edit
+	</button>
+</div>
+<h1>
+	{{model.title}}
+	<span ng-hide="!model.new" class="badge">
+		New
+	</span>
+</h1>
 <div class="panel-body"> 
+	<div ng-hide="!editable">
+		<div class="form-group">
+			<input type="text" class="form-control" placeholder="Title" ng-model="model.title"/>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" ng-model="model.new"> New or Moved
+				</label>
+			</div>
+			<textarea class="form-control" rows="2" placeholder="Summary" ng-model="model.summary"></textarea>
+			<textarea class="form-control" rows="25" placeholder="Body" ng-model="model.body"></textarea>
+		</div>
 
+	</div>
+	<h3 ng-hide="!editable">Preview</h3>
+	<div>
+		{{model.summary}}
+	</div>
+	<div>
+		{{model.body}}
+	</div>
+	<div class="input-group pull-right">
+		<button type="button" class="btn btn-success" ng-hide="!editable" ng-click="save()">
+			Save
+		</button>
+	</div>
 </div>
