@@ -36,7 +36,9 @@ demo.app.DetailsWidgetCtrl = function($scope, $attrs, paramService, radarService
 	 * @export
 	 */
 	$scope.save = function() {
-		radarService.saveModel($scope.model);
+		radarService.saveModel($scope.model).then(function() {
+			console.log("complete");
+		});
 	};
 };
 

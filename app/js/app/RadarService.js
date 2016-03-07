@@ -9,20 +9,23 @@ goog.require('demo.app.radar.DefaultMarkerTypes');
 
 /**
  * @param {angular.$http} $http
+ * @param {angular.$q} $q
  * @constructor
  * @ngInject
  */
-demo.app.RadarServiceFactory = function($http) {
-	return new demo.app.RadarService($http);
+demo.app.RadarServiceFactory = function($http, $q) {
+	return new demo.app.RadarService($http, $q);
 };
 
 /**
  * @param {angular.$http} $http
+ * @param {angular.$q} $q
  * @constructor
  * @ngInject
  */
-demo.app.RadarService = function($http) {
+demo.app.RadarService = function($http, $q) {
 	this.http = $http;
+	this.q = $q;
 };
 
 /**
@@ -68,13 +71,16 @@ demo.app.RadarService.prototype.refreshRadar = function(view) {
 	var url = this.host + '/api/marker?view=' + view;
 
 	var that = this;
-	this.http.get(url)
-		.success(function(data) {
-			for (var i = 0; i < data.length; i++) {
+	return this.http.get(url)
+		.then(function(response) {
+			that.radars[view].markers = [];
+			that.radars[view].deletedMarkers = [];
+			for (var i = 0; i < response.data.length; i++) {
 				that.radars[view].addMarker(
-					new demo.app.radar.Marker(that.radars[view].graph, data[i])
+					new demo.app.radar.Marker(that.radars[view].graph, response.data[i])
 				);
 			}
+			return that.radars[view];
 		});
 };
 
@@ -82,35 +88,26 @@ demo.app.RadarService.prototype.refreshRadar = function(view) {
  * @param {demo.app.radar.Radar} radar
  */
 demo.app.RadarService.prototype.saveRadar = function(radar) {
-	for (var i = 0; i < radar.markers.length; i++) {
-		console.log(radar.markers[i].model);
-		if (radar.markers[i].model['id'] === null) {
-			this.addMarker(radar.markers[i]);
+	var that = this;
+	var promises = [];
+
+	angular.forEach(radar.markers, function(marker) {
+		if (marker.model['id'] === null) {
+			promises.push(that.addMarker(marker));
 		} else {
-			this.saveMarker(radar.markers[i]);
+			promises.push(that.saveMarker(marker));
 		}
-	}
-	for (i = 0; i < radar.deletedMarkers.length; i++) {
-		if (radar.deletedMarkers[i].model['id'] !== null) {
-			this.deleteMarker(radar.deletedMarkers[i]);
+	});
+	angular.forEach(radar.deletedMarkers, function(marker) {
+		if (marker.model['id'] !== null) {
+			promises.push(that.deleteMarker(marker, radar));
 		}
-	}
-};
+	});
 
-/**
- * @param {demo.app.radar.Marker} marker
- */
-demo.app.RadarService.prototype.saveMarker = function(marker) {
-	this.saveModel(marker.model);
-};
-
-/**
- * @param {*} model
- */
-demo.app.RadarService.prototype.saveModel = function(model) {
-	var url = this.host + '/api/marker/' + model['id'];
-
-	this.http.put(url, model);
+	return this.q.all(promises).then(function() {
+		return that.refreshRadar(radar.graph.view);
+		
+	});
 };
 
 /**
@@ -119,14 +116,38 @@ demo.app.RadarService.prototype.saveModel = function(model) {
 demo.app.RadarService.prototype.addMarker = function(marker) {
 	var url = this.host + '/api/marker';
 
-	this.http.post(url, marker.model);
+	return this.http.post(url, marker.model).then(function(response) {
+		marker.model['id'] = response.data['id'];
+	});
 };
 
 /**
  * @param {demo.app.radar.Marker} marker
  */
-demo.app.RadarService.prototype.deleteMarker = function(marker) {
+demo.app.RadarService.prototype.saveMarker = function(marker) {
+	return this.saveModel(marker.model);
+};
+
+/**
+ * @param {*} model
+ */
+demo.app.RadarService.prototype.saveModel = function(model) {
+	var url = this.host + '/api/marker/' + model['id'];
+
+	return this.http.put(url, model);
+};
+
+/**
+ * @param {demo.app.radar.Marker} marker
+ * @param {demo.app.radar.Radar} radar
+ */
+demo.app.RadarService.prototype.deleteMarker = function(marker, radar) {
 	var url = this.host + '/api/marker/' + marker.model['id'];
 
-	this.http.delete(url);
+	return this.http.delete(url).then(function() {
+		var idx = radar.deletedMarkers.indexOf(marker);
+		if (idx > -1) {
+			radar.deletedMarkers.splice(idx, 1);
+		}
+	});
 };
