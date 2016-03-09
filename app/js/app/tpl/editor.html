@@ -1,16 +1,32 @@
 <div class="modal-header">
-	<h3 class="modal-title">{{marker.model.title}}
+	<h3 class="modal-title">
+		{{marker.model.title}}
+		<span ng-hide="!marker.model.new" class="badge">
+			New
+		</span>
 	</h3>
 </div>
 
 <div class="modal-body">
-	<div class="input-group">
-		<input type="text" class="form-control" placeholder="Recipient's username" ng-model="marker.model.title"/>
+
+	<!-- Fields -->
+	<div ng-hide="!editable">
+		<div class="form-group">
+			<input type="text" class="form-control" placeholder="Title" ng-model="marker.model.title"/>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" ng-model="marker.model.new"> New or Moved
+				</label>
+			</div>
+			<textarea class="form-control" rows="2" placeholder="Summary" ng-model="marker.model.summary"></textarea>
+			<textarea class="form-control" rows="25" placeholder="Body" ng-model="marker.model.body"></textarea>
+		</div>
 	</div>
+	<!-- end -->
 
 </div>
 
 <div class="modal-footer">
 	<button class="btn btn-danger" type="button" ng-click="delete()">Delete</button>
-	<button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+	<button class="btn btn-success" type="button" ng-click="ok()">OK</button>
 </div>
