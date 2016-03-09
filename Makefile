@@ -19,7 +19,7 @@ js-build:
 	grunt build
 
 go-clean: 
-	rm ui-widget
+	rm -f tech-radar
 
 go-deps:
 	go get
