@@ -1,7 +1,9 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"os"
@@ -29,6 +31,25 @@ func GetCss(res http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
+	dbStr := os.Getenv("DB")
+	bind := os.Getenv("BIND")
+
+	if bind == "" {
+		bind = "0.0.0.0:8080"
+	}
+
+	if dbStr == "" {
+		log.Fatal("Database connection string must be set in 'DB' environment variable")
+		return
+	}
+
+	flag.Parse()
+
+	if flag.NArg() == 1 && flag.Arg(0) == "migrate" {
+		log.Printf("Migrating Database")
+		return
+	}
+
 	m := []*Marker{}
 	for i := 0; i < 5; i++ {
 		m = append(m, &Marker{Id: i, Title: fmt.Sprintf("New %d", i), Deg: rand.Intn(90), Mag: rand.Intn(100)})
