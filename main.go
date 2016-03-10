@@ -8,8 +8,10 @@ import (
 	"net/http"
 	"os"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
 	"github.com/rs/cors"
 )
 
@@ -45,8 +47,20 @@ func main() {
 
 	flag.Parse()
 
+	db, err := gorm.Open("mysql", dbStr)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	db.SingularTable(true)
+
 	if flag.NArg() == 1 && flag.Arg(0) == "migrate" {
 		log.Printf("Migrating Database")
+
+		// this shouldn't ever go back to varchar, it should stick after it is made text
+		db.AutoMigrate(&Marker{})
+		db.Model(&Marker{}).ModifyColumn("body", "text")
+
 		return
 	}
 
@@ -54,7 +68,7 @@ func main() {
 	for i := 0; i < 5; i++ {
 		m = append(m, &Marker{Id: i, Title: fmt.Sprintf("New %d", i), Deg: rand.Intn(90), Mag: rand.Intn(100)})
 	}
-	resource := &MarkerResource{&MarkerRepo{m}}
+	resource := &MarkerResource{&MarkerRepo{db, m}}
 
 	r := mux.NewRouter()
 

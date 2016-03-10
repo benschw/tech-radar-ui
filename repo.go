@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/jinzhu/gorm"
+)
 
 type Marker struct {
 	Id      int    `json:"id"`
@@ -13,6 +17,7 @@ type Marker struct {
 }
 
 type MarkerRepo struct {
+	Db      gorm.DB
 	markers []*Marker
 }
 

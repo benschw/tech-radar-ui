@@ -1,16 +1,4 @@
 POC fort closure and angularjs
 
-# download additional deps
-closure library, closure compiler src, and compiler jar
-	
-	make deps
-
-# build and run locally
-	
-	grunt dist
-	make run
-
-# live server
-
-	grunt server
-
+	make build
+	BIND=0.0.0.0:8000 DB=root:@tcp(localhost:3306)/techradar?charset=utf8&parseTime=True ./tech-radar
