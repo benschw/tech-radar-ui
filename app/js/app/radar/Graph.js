@@ -120,8 +120,8 @@ demo.app.radar.Graph.prototype.getDefaultVector = function(type) {
 		deg += 270;
 	}
 	return {
-		'mag': mag,
-		'deg': deg
+		'mag': Math.round(mag),
+		'deg': Math.round(deg)
 	};
 };
 

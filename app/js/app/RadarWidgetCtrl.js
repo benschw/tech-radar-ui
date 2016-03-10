@@ -20,6 +20,12 @@ goog.require('demo.app.RadarService');
 demo.app.RadarWidgetCtrl = function($scope, $attrs, radarService, $uibModal) {
 	var view  = demo.app.radar.Quadrants.lookupSlug($attrs['quadrant']);
 	radarService.host = $attrs['host'];
+	
+	/**
+	 * @type {string}
+	 * @export
+	 */
+	$scope.detailsHref = $attrs['detailsHref'];
 
 	/**
 	 * @type {boolean}

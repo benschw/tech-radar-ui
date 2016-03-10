@@ -30,7 +30,7 @@
 			<div class="list-group-item-body" ng-hide="item !== radar.current">
 				{{item.model.summary}}
 				<br />
-				<a href="details.html?id={{item.model.id}}">More</a>
+				<a ng-hide="editable" href="{{detailsHref}}?id={{item.model.id}}">More</a>
 
 				<button class="pull-right btn btn-default btn-xs" type="button"
 					ng-hide="!editable"
