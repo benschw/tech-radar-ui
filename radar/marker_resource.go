@@ -1,4 +1,4 @@
-package main
+package radar
 
 import (
 	"fmt"
@@ -20,14 +20,14 @@ func (r *MarkerResource) addMarker(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	id, err := r.repo.add(&marker)
+	added, err := r.repo.add(&marker)
 	if err != nil {
 		log.Print(err)
 		rest.SetBadRequestResponse(res)
 		return
 	}
 
-	if err := rest.SetCreatedResponse(res, marker, fmt.Sprintf("api/marker/%d", id)); err != nil {
+	if err := rest.SetCreatedResponse(res, added, fmt.Sprintf("api/marker/%d", added.Id)); err != nil {
 		rest.SetInternalServerErrorResponse(res, err)
 		return
 	}
@@ -83,12 +83,13 @@ func (r *MarkerResource) saveMarker(res http.ResponseWriter, req *http.Request) 
 	}
 	marker.Id = id
 
-	if err := r.repo.save(&marker); err != nil {
+	saved, err := r.repo.save(&marker)
+	if err != nil {
 		log.Print(err)
 		rest.SetBadRequestResponse(res)
 		return
 	}
-	if err := rest.SetOKResponse(res, marker); err != nil {
+	if err := rest.SetOKResponse(res, saved); err != nil {
 		rest.SetInternalServerErrorResponse(res, err)
 		return
 	}

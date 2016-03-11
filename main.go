@@ -2,35 +2,11 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
-	"math/rand"
-	"net/http"
 	"os"
 
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
-	"github.com/jinzhu/gorm"
-	"github.com/rs/cors"
+	"github.com/benschw/tech-radar/radar"
 )
-
-func GetJavascript(res http.ResponseWriter, req *http.Request) {
-	data, err := Asset("dist/app.js")
-	if err != nil {
-		panic(err)
-	}
-	res.Header().Set("Content-Type", "application/javascript")
-	res.Write(data)
-}
-func GetCss(res http.ResponseWriter, req *http.Request) {
-	data, err := Asset("dist/style.css")
-	if err != nil {
-		panic(err)
-	}
-	res.Header().Set("Content-Type", "text/css")
-	res.Write(data)
-}
 
 func main() {
 	dbStr := os.Getenv("DB")
@@ -47,48 +23,31 @@ func main() {
 
 	flag.Parse()
 
-	db, err := gorm.Open("mysql", dbStr)
+	js, err := Asset("dist/app.js")
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
-	db.SingularTable(true)
-
-	if flag.NArg() == 1 && flag.Arg(0) == "migrate" {
-		log.Printf("Migrating Database")
-
-		// this shouldn't ever go back to varchar, it should stick after it is made text
-		db.AutoMigrate(&Marker{})
-		db.Model(&Marker{}).ModifyColumn("body", "text")
-
+	css, err := Asset("dist/style.css")
+	if err != nil {
+		log.Fatal(err)
 		return
 	}
 
-	m := []*Marker{}
-	for i := 0; i < 5; i++ {
-		m = append(m, &Marker{Id: i, Title: fmt.Sprintf("New %d", i), Deg: rand.Intn(90), Mag: rand.Intn(100)})
+	server, err := radar.NewServer(dbStr, bind, js, css)
+	if err != nil {
+		log.Fatal(err)
+		return
 	}
-	resource := &MarkerResource{&MarkerRepo{db, m}}
 
-	r := mux.NewRouter()
+	if flag.NArg() == 1 && flag.Arg(0) == "migrate" {
+		log.Printf("Migrating Database")
+		err = server.Migrate()
+		if err != nil {
+			log.Fatal(err)
+		}
+		return
+	}
 
-	r.HandleFunc("/api/marker", resource.addMarker).Methods("POST")
-	r.HandleFunc("/api/marker", resource.findAllMarkers).Methods("GET")
-	r.HandleFunc("/api/marker/{id}", resource.getMarker).Methods("GET")
-	r.HandleFunc("/api/marker/{id}", resource.saveMarker).Methods("PUT")
-	r.HandleFunc("/api/marker/{id}", resource.deleteMarker).Methods("DELETE")
-
-	r.HandleFunc("/assets/app.js", GetJavascript).Methods("GET")
-	r.HandleFunc("/assets/style.css", GetCss).Methods("GET")
-
-	http.Handle("/", r)
-
-	serveMux := http.NewServeMux()
-	serveMux.Handle("/", r)
-	handler := cors.New(cors.Options{
-		AllowedMethods: []string{"GET", "POST", "DELETE", "PUT"},
-	}).Handler(serveMux)
-
-	loggedRouter := handlers.LoggingHandler(os.Stdout, handler)
-	http.ListenAndServe(":8000", loggedRouter)
+	server.Run()
 }
