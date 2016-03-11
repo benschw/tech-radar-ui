@@ -22,7 +22,7 @@ var (
 )
 
 type MarkerRepo struct {
-	Db gorm.DB
+	Db *gorm.DB
 }
 
 func (r *MarkerRepo) Migrate() error {
