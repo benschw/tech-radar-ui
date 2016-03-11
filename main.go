@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/benschw/tech-radar/radar"
+	"github.com/benschw/tech-radar-ui/radar"
 )
 
 func main() {
