@@ -24,10 +24,10 @@
 	</div>
 
 	<h3 ng-hide="!editable">Preview</h3>
-	<div>
-		{{model.summary}}
-	</div>
+
+	<div markdown="model.summary"></div>
 	<div markdown="model.body"></div>
+
 	<div class="input-group pull-right">
 		<button type="button" class="btn btn-success" ng-hide="!editable" ng-click="save()">
 			Save
