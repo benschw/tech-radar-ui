@@ -16,6 +16,7 @@
 	"goog": false,
 	"demo": false,
 	"google": false,
-	"cache": false
+	"cache": false,
+	"showdown": false
   }
 }

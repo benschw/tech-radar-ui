@@ -31,6 +31,7 @@ module.exports = function (grunt) {
     closureCompiler: process.env.CLOSURE_COMPILER || 'closure/compiler.jar',
     closureLibrary: process.env.CLOSURE_PATH || 'closure/closure-library',
     externs: [
+      'showdown-1.3.js',
       'closure/closure-compiler/contrib/externs/angular-1.4*.js',
       'closure/closure-compiler/contrib/externs/angular_ui_router.js',
       'closure/closure-compiler/contrib/externs/ui-bootstrap.js',
