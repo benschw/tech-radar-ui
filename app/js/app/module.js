@@ -15,6 +15,7 @@ goog.require('demo.app.RadarWidgetCtrl');
 goog.require('demo.app.EditDirectiveFactory');
 goog.require('demo.app.SaveDirectiveFactory');
 
+goog.require('demo.app.markdown.module');
 
 /**
  * @type {angular.Module} 
@@ -23,6 +24,7 @@ demo.app.module = angular.module('demo.app', [
 		'ngRoute',
 		'ui.bootstrap',
 		'ngSanitize',
+		demo.app.markdown.module.name,
 		cache.tpl.name
 	])
 	.controller(demo.app.EditorCtrl.name, demo.app.EditorCtrl)
@@ -36,36 +38,6 @@ demo.app.module = angular.module('demo.app', [
 	.directive('radarSaveButton', demo.app.SaveDirectiveFactory)
 	.factory('radarService', demo.app.RadarServiceFactory)
 	.factory('paramService', demo.app.ParamServiceFactory)
-	.provider('markdownConverter', function () {
-		var opts = {};
-		return {
-			'config': function (newOpts) {
-				opts = newOpts;
-			},
-			'$get': function () {
-				return new showdown.Converter(opts);
-			}
-		};
-	})
-	.directive('markdown', ['$sanitize', 'markdownConverter', function ($sanitize, markdownConverter) {
-		console.log ("loading markdown");
-		return {
-			'restrict': 'AE',
-			'link': function (scope, element, attrs) {
-				if (attrs['markdown']) {
-					console.log("markdown");
-					scope.$watch(attrs['markdown'], function (newVal) {
-					var html = newVal ? $sanitize(markdownConverter.makeHtml(newVal)) : '';
-					element.html(html);
-					});
-				} else {
-					console.log("markdown2");
-					var html = $sanitize(markdownConverter.makeHtml(element.text()));
-					element.html(html);
-				}
-			}
-		};
-	}])
 
 	;
 
