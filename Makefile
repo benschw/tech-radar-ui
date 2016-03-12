@@ -38,3 +38,7 @@ build: js-build go-build
 
 
 ci: clean deps build
+
+run:
+	BIND="0.0.0.0:8000" DB="root:@tcp(localhost:3306)/techradar?charset=utf8&parseTime=True" ./tech-radar-ui migrate
+	BIND="0.0.0.0:8000" DB="root:@tcp(localhost:3306)/techradar?charset=utf8&parseTime=True" ./tech-radar-ui
