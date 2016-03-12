@@ -1,6 +1,12 @@
 html, body { height: 100%; width: 100%; margin: 0; }
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+html {
+  position: relative;
+  min-height: 100%;
+}
 body {
-/*	padding-top: 40px;*/
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
 }
 
 nav img, footer img {
@@ -8,8 +14,8 @@ nav img, footer img {
 	height: 30px;
 }
 
-footer .container {
-	text-align: center;
+.footer {
+	height: 60px;
 	padding: 15px;
 }
 
