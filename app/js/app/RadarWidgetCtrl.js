@@ -66,7 +66,7 @@ demo.app.RadarWidgetCtrl = function($scope, $attrs, radarService, $uibModal) {
 	 */
 	$scope.save = function() {
 		radarService.saveRadar($scope.radar).then(function() {
-			console.log("complete");
+			$scope.editable = false;
 		});
 	};
 

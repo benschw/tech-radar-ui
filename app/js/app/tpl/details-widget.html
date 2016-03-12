@@ -1,4 +1,7 @@
 <div class="input-group pull-right">
+	<button type="button" class="btn btn-success" ng-hide="!editable" ng-click="save()">
+		Save
+	</button>
 	<button type="button" class="btn" ng-model="editable" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
 		Edit
 	</button>
@@ -28,9 +31,4 @@
 	<div markdown="model.summary"></div>
 	<div markdown="model.body"></div>
 
-	<div class="input-group pull-right">
-		<button type="button" class="btn btn-success" ng-hide="!editable" ng-click="save()">
-			Save
-		</button>
-	</div>
 </div>
