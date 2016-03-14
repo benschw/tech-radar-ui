@@ -13,7 +13,7 @@ demo.app.markdown.MarkdownConverterFactory = function() {
 			opts = newOpts;
 		},
 		'$get': function () {
-			return new showdown.Converter(opts);
+			return new showdown.Converter({'tables': true});
 		}
 	};
 };

@@ -16,10 +16,12 @@ demo.app.markdown.MarkdownDirectiveFactory = function($sanitize, markdownConvert
 				scope.$watch(attrs['markdown'], function (newVal) {
 					var html = newVal ? $sanitize(markdownConverter.makeHtml(newVal)) : '';
 					element.html(html);
+					element.find('table').addClass('table table-striped');
 				});
 			} else {
 				var html = $sanitize(markdownConverter.makeHtml(element.text()));
 				element.html(html);
+				element.find('table').addClass('table');
 			}
 		}
 	};
