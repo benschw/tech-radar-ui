@@ -21,7 +21,7 @@ demo.app.markdown.MarkdownDirectiveFactory = function($sanitize, markdownConvert
 			} else {
 				var html = $sanitize(markdownConverter.makeHtml(element.text()));
 				element.html(html);
-				element.find('table').addClass('table');
+				element.find('table').addClass('table table-striped');
 			}
 		}
 	};
