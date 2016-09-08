@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/benschw/tech-radar-ui/radar"
+	_ "github.com/jteeuwen/go-bindata"
 )
 
 func main() {
