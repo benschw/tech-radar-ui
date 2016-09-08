@@ -28,7 +28,7 @@ module.exports = function (grunt) {
     componentPath: 'bower_components',
 
     // closure
-    closureCompiler: process.env.CLOSURE_COMPILER || 'closure/compiler.jar',
+    closureCompiler: 'node_modules/google-closure-compiler/compiler.jar',
     closureLibrary: process.env.CLOSURE_PATH || 'closure/closure-library',
     externs: [
       'closure/closure-compiler/contrib/externs/showdown-1.3.js',
@@ -40,7 +40,7 @@ module.exports = function (grunt) {
 
 
     // This sting will wrap your code marked as %output%
-    outputWrapper: '(function(){ %output% }).call(window)',
+    outputWrapper: '(function(){%output%}).call(window)',
 
     // the compiled file
     destCompiled: 'dist/app.js',
