@@ -13,18 +13,14 @@ env:
 before_install:
   - npm install -g bower
   - npm install -g grunt
-  - mkdir closure
-  - git clone https://github.com/google/closure-library.git closure/closure-library
-  - git clone https://github.com/google/closure-compiler.git closure/closure-compiler
-  - bower install
-  - npm install
+  - make deps
 
 script:
-  - grunt build
-  - tar czf dist tech-radar-ui.gz
+  - make build
+  - tar czf tech-radar-ui.tar.gz dist
   - mkdir -p dist2 release
-  - cp tech-radar-ui.gz dist2/tech-radar-ui_latest.gz
-  - cp tech-radar-ui.gz release/tech-radar-ui_$(git describe --tags).gz
+  - cp tech-radar-ui.tar.gz dist2/tech-radar-ui_latest.tar.gz
+  - cp tech-radar-ui.tar.gz release/tech-radar-ui_$(git describe --tags).tar.gz
 
 deploy:
   - provider: s3
