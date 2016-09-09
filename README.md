@@ -1,4 +1,4 @@
-POC fort closure and angularjs
+[![Build Status](https://travis-ci.org/benschw/tech-radar-ui.svg?branch=master)](https://travis-ci.org/benschw/tech-radar-ui)
 
-	make build
-	BIND=0.0.0.0:8000 DB=root:@tcp(localhost:3306)/techradar?charset=utf8&parseTime=True ./tech-radar-ui
+
+see [tech-radar](https://github.com/benschw/tech-radar) for backing rest service.
