@@ -10,6 +10,8 @@ goog.require('demo.app.RadarService');
 
 
 /**
+ * @param {*} $window
+ * @param {angular.Scope} $rootScope
  * @param {angular.Scope} $scope
  * @param {angular.Attributes} $attrs
  * @param {demo.app.RadarService} radarService
@@ -17,10 +19,11 @@ goog.require('demo.app.RadarService');
  * @constructor
  * @ngInject
  */
-demo.app.RadarWidgetCtrl = function($scope, $attrs, radarService, $uibModal) {
+demo.app.RadarWidgetCtrl = function($window, $rootScope, $scope, $attrs, radarService, $uibModal) {
 	var view  = demo.app.radar.Quadrants.lookupSlug($attrs['quadrant']);
 	radarService.host = $attrs['host'];
-	
+
+
 	/**
 	 * @type {string}
 	 * @export
@@ -69,6 +72,18 @@ demo.app.RadarWidgetCtrl = function($scope, $attrs, radarService, $uibModal) {
 			$scope.editable = false;
 		});
 	};
+
+	$window.onbeforeunload = function () {
+		var event = $rootScope.$broadcast('onBeforeUnload');
+		if (event.defaultPrevented) {
+			return "";
+		}
+	};
+	$scope.$on('onBeforeUnload', function (e) {
+		if ($scope.editable) {
+			e.preventDefault();
+		}
+	});
 
 };
 

@@ -12,6 +12,7 @@ demo.app.ParamServiceFactory = function() {
 };
 
 /**
+ * Param service for details page to determine which marker is featured
  * @constructor
  * @ngInject
  */

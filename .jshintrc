@@ -17,6 +17,7 @@
 	"demo": false,
 	"google": false,
 	"cache": false,
-	"showdown": false
+	"showdown": false,
+	"confirm": false
   }
 }

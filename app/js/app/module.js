@@ -21,7 +21,6 @@ goog.require('demo.app.markdown.module');
  * @type {angular.Module} 
  */
 demo.app.module = angular.module('demo.app', [
-		'ngRoute',
 		'ui.bootstrap',
 		'ngSanitize',
 		demo.app.markdown.module.name,
