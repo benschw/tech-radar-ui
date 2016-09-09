@@ -16,6 +16,13 @@ before_install:
   - go get github.com/golang/lint/golint
   - go get github.com/mitchellh/gox
   - go get github.com/jteeuwen/go-bindata/...
+  - npm install -g bower
+  - npm install -g grunt
+  - mkdir closure
+  - git clone https://github.com/google/closure-library.git closure/closure-library
+  - git clone https://github.com/google/closure-compiler.git closure/closure-compiler
+  - bower install
+  - npm install
 
 script:
   - mysql -e 'create database test_techradar'
