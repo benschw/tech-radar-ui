@@ -1,4 +1,4 @@
-
+all: clean deps build
 
 clean:
 	rm -rf closure
@@ -15,4 +15,4 @@ deps:
 build:
 	grunt build
 
-
+.PHONY: build
