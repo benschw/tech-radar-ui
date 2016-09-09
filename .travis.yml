@@ -7,7 +7,7 @@ go:
   - tip
 
 services:
-  - rabbitmq
+  - mysql
 
 env:
   - PATH=/home/travis/gopath/bin:$PATH
@@ -18,7 +18,8 @@ before_install:
   - go get github.com/jteeuwen/go-bindata/...
 
 script:
-  - go vet $(go list ./... | grep -v vendor)
+  - mysql -e 'create database test_techradar'
+  - go vet $(go list ./... | grep -v '/vendor/')
   - go test $(go list ./... | grep -v '/vendor/')
   - go-bindata -o assets.go dist/
   - gox -ldflags "-X main.Version=$TRAVIS_BUILD_NUMBER" -output "tech-radar_{{.OS}}_{{.Arch}}" -osarch="linux/amd64"
